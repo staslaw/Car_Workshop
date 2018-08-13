@@ -50,7 +50,7 @@ public class CreateDatabase extends HttpServlet {
                         "hourly_rate DECIMAL(5,2))";
 
         String query4 =
-                "CREATE TABLE IF NOT EXISTS Order(" +
+                "CREATE TABLE IF NOT EXISTS Orders(" +
                         "order_id INT AUTO_INCREMENT PRIMARY KEY NOT NULL, " +
                         "employee_id INT, " +
                         "vehicle_id INT," +
@@ -59,7 +59,7 @@ public class CreateDatabase extends HttpServlet {
                         "service_start DATE, " +
                         "issue_description TEXT, " +
                         "repair_description TEXT, " +
-                        "status VARCHAR(200) NOT NULL, " +
+                        "status VARCHAR(30) NOT NULL, " +
                         "repair_cost DECIMAL(7,2)," +
                         "parts_cost DECIMAL(7,2)," +
                         "hourly_rate DECIMAL(5,2)," +
