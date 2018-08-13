@@ -29,7 +29,7 @@ public class ClientDao {
             }
 
         }else{
-            String query = "UPDATE Client SET first_name = ?, last_name = ?, email = ?, phone = ?, birthday = ? WHERE id = ?";
+            String query = "UPDATE Client SET first_name = ?, last_name = ?, email = ?, phone = ?, birthday = ? WHERE client_id = ?";
             List<String> params = new ArrayList<>();
             params.add(client.getFirstName());
             params.add(client.getLastName());
@@ -39,7 +39,6 @@ public class ClientDao {
             params.add(String.valueOf(client.getId()));
             try{
                 DbService.executeUpdate(query,params);
-                System.out.println("Dane użytkownika zostały zmienione.");
 
             }catch (SQLException e) {
                 e.printStackTrace();
