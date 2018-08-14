@@ -13,7 +13,7 @@ public class Employee {
     public Employee() {
     }
 
-    public Employee(int id, String firstName, String lastName, String address, String phone, String note, double hourly_rate) {
+    public Employee(String firstName, String lastName, String address, String phone, String note, double hourly_rate) {
         this.id = 0;
         setFirstName(firstName);
         setLastName(lastName);
