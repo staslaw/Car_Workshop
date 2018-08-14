@@ -1,6 +1,6 @@
 package pl.coderslab.model;
 
-public class Orders {
+public class Order {
 
     private int id;
     private Employee employee;
@@ -16,25 +16,16 @@ public class Orders {
     private double hourlyRate;
     private int manHours;
 
-    public Orders() {
+    public Order() {
     }
 
-    public Orders(Vehicle vehicle, String serviceAccept, String issueDesc, Status status) {
+    public Order(Vehicle vehicle,String servicePlan, String issueDesc, Status status, Employee employee ) {
         this.id = 0;
         setVehicle(vehicle);
-        setServiceAccept(serviceAccept);
+        setServicePlan(servicePlan);
         setIssueDesc(issueDesc);
         setStatus(status);
-    }
-
-    public Orders(Vehicle vehicle, String serviceAccept, String issueDesc, Status status, Employee employee) {
-        this(vehicle, serviceAccept, issueDesc, status);
         setEmployee(employee);
-    }
-
-    public Orders(Vehicle vehicle, String serviceAccept, String issueDesc, Status status, Employee employee, String servicePlan) {
-        this(vehicle, serviceAccept, issueDesc, status, employee);
-        setServicePlan(servicePlan);
     }
 
     public int getId() {
@@ -108,7 +99,6 @@ public class Orders {
     public void setRepairDesc(String repairDesc) {
         this.repairDesc = repairDesc;
     }
-
 
     public double getRepairCost() {
         return repairCost;
