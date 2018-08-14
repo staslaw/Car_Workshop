@@ -13,14 +13,14 @@ public class Employee {
     public Employee() {
     }
 
-    public Employee(int id, String firstName, String lastName, String address, String phone, String note, double hourly_rate) {
-        this.id = 0;
+    public Employee(String firstName, String lastName, String address, String phone, String note, double hourly_rate) {
         setFirstName(firstName);
         setLastName(lastName);
         setAddress(address);
         setPhone(phone);
         setNote(note);
         setHourly_rate(hourly_rate);
+        this.id = 0;
     }
 
     public int getId() {
