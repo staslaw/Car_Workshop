@@ -10,6 +10,7 @@
 <html>
 <head>
     <title>Title</title>
+    <meta charset="utf-8">
 </head>
 <body>
 <table border="1">
@@ -33,11 +34,11 @@
         <td>${element.phone}</td>
         <td>${element.birthday}</td>
         <td>samochody</td>
-        <td><a href="/ClientUpdate?id=${element.id}&firstName=${element.firstName}&lastName=${element.lastName}&email=${element.email}&phone=${element.phone}&birthday=${element.birthday}">edytuj</a></td>
+        <td><a href="/clientForm.jsp?id=${element.id}&firstName=${element.firstName}&lastName=${element.lastName}&email=${element.email}&phone=${element.phone}&birthday=${element.birthday}">edytuj</a></td>
         <td><a href="/ClientDelete?id=${element.id}">usuń</a></td>
     </tr>
 </c:forEach>
 </table>
-<a href="/ClientUpdate?id=0">dodaj</a>
+<a href="/clientForm.jsp?id=0">dodaj</a>
 </body>
 </html>
