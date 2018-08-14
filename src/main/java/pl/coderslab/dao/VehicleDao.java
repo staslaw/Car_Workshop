@@ -89,7 +89,7 @@ public class VehicleDao {
             for(String[] row : rows){
                 Vehicle vehicle = new Vehicle();
                 vehicle.setId(Integer.parseInt(row[0]));
-                vehicle.setClient(ClientDao.loadById(Integer.parseInt(rows.get(0)[1])));
+                vehicle.setClient(ClientDao.loadById(Integer.parseInt(row[1])));
                 vehicle.setModel((row[2]));
                 vehicle.setMake((row[3]));
                 vehicle.setProductionDate((row[4]));
