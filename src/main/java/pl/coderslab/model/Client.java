@@ -13,12 +13,12 @@ public class Client {
     }
 
     public Client(String firstName, String lastName, String email, String phone, String birthday) {
+        this.id  = 0;
         setFirstName(firstName);
         setLastName(lastName);
         setEmail(email);
         setPhone(phone);
         setBirthday(birthday);
-        this.id  = 0;
     }
 
     public int getId() {

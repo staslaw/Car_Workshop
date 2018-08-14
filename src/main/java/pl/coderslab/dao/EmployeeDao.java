@@ -1,6 +1,5 @@
 package pl.coderslab.dao;
 
-import pl.coderslab.model.Client;
 import pl.coderslab.model.Employee;
 import pl.coderslab.service.DbService;
 
