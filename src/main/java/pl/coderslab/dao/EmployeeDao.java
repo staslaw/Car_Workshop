@@ -29,7 +29,7 @@ public class EmployeeDao {
             }
         }
         else{
-            String query = "UPDATE Employee SET first_name = ?, last_name = ?, address = ?, phone = ?, note = ?, hourly_rate = ?";
+            String query = "UPDATE Employee SET first_name = ?, last_name = ?, address = ?, phone = ?, note = ?, hourly_rate = ? WHERE employee_id = ?";
             List<String> params = new ArrayList<>();
             params.add(employee.getFirstName());
             params.add(employee.getLastName());
@@ -37,6 +37,7 @@ public class EmployeeDao {
             params.add(employee.getPhone());
             params.add(employee.getNote());
             params.add(String.valueOf(employee.getHourly_rate()));
+            params.add(String.valueOf(employee.getId()));
             try{
                 DbService.executeUpdate(query, params);
             } catch (SQLException e) {
