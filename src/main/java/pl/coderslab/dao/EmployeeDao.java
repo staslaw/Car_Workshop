@@ -86,6 +86,7 @@ public class EmployeeDao {
                 employee.setPhone((row[4]));
                 employee.setNote((row[5]));
                 employee.setHourly_rate(Double.parseDouble(row[6]));
+                employees.add(employee);
             }
             return employees;
         } catch (SQLException e){
@@ -94,7 +95,7 @@ public class EmployeeDao {
         return null;
     }
 
-    private static void delete(Employee employee){
+    public static void delete(Employee employee){
         String query = "DELETE FROM Employee WHERE employee_id = ?";
         try{
             if (employee.getId() != 0){
