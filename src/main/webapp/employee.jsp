@@ -12,6 +12,7 @@
     <title>Title</title>
 </head>
 <body>
+<jsp:include page="WEB-INF/fragments/header.jsp"/>
 
 <table border="1">
     <tr>
@@ -44,4 +45,5 @@
 <a href="/employeeForm.jsp?id=0">dodaj</a>
 
 </body>
+<jsp:include page="WEB-INF/fragments/footer.jsp"/>
 </html>

@@ -12,6 +12,7 @@
     <meta charset="utf-8">
 </head>
 <body>
+<jsp:include page="WEB-INF/fragments/header.jsp"/>
 
 <form action='/ClientUpdate' method='post'>
     <input type='text' name='id' value='${param.id}' hidden>
@@ -24,4 +25,5 @@
 </form>
 
 </body>
+<jsp:include page="WEB-INF/fragments/footer.jsp"/>
 </html>

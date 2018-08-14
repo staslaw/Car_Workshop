@@ -11,6 +11,7 @@
     <title>Title</title>
 </head>
 <body>
+<jsp:include page="WEB-INF/fragments/header.jsp"/>
 
 <form action='/EmployeeUpdate' method='post'>
     <input type='text' name='id' value='${param.id}' hidden>
@@ -24,4 +25,5 @@
     </form>
 
 </body>
+<jsp:include page="WEB-INF/fragments/footer.jsp"/>
 </html>

@@ -13,6 +13,8 @@
     <meta charset="utf-8">
 </head>
 <body>
+<jsp:include page="WEB-INF/fragments/header.jsp"/>
+
 <table border="1">
     <tr>
         <th>id</th>
@@ -41,4 +43,5 @@
 </table>
 <a href="/clientForm.jsp?id=0">dodaj</a>
 </body>
+<jsp:include page="WEB-INF/fragments/footer.jsp"/>
 </html>
