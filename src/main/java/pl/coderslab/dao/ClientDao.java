@@ -46,11 +46,13 @@ public class ClientDao {
         }
 
     }
+
     public static List<Client> loadAll(){
         String query = "SELECT * FROM Client";
         return getClientsFromQuery(query,null);
 
     }
+
     public static Client loadById(int id){
         String query = "SELECT * FROM Client WHERE client_id = ?";
         try{

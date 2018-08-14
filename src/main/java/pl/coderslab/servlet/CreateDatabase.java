@@ -24,7 +24,7 @@ public class CreateDatabase extends HttpServlet {
                         "first_name VARCHAR(100) NOT NULL, " +
                         "last_name VARCHAR(200) NOT NULL, " +
                         "email VARCHAR(200) UNIQUE, " +
-                        "phone CHAR(9), " +
+                        "phone CHAR(15), " +
                         "birthday DATE, " +
                         "PRIMARY KEY(client_id))";
 
@@ -45,7 +45,7 @@ public class CreateDatabase extends HttpServlet {
                         "first_name VARCHAR(100), " +
                         "last_name VARCHAR(200), " +
                         "address VARCHAR(200), " +
-                        "phone CHAR(9), " +
+                        "phone CHAR(15), " +
                         "note VARCHAR(255)," +
                         "hourly_rate DECIMAL(5,2))";
 
@@ -67,12 +67,11 @@ public class CreateDatabase extends HttpServlet {
                         "FOREIGN KEY (employee_id) REFERENCES Employee(employee_id),"+
                         "FOREIGN KEY (vehicle_id) REFERENCES Vehicle(vehicle_id))";
 
-
         try {
             DbService.executeUpdate(query,null);
-//            DbService.executeUpdate(query2,null);
-//            DbService.executeUpdate(query3,null);
-//            DbService.executeUpdate(query4,null);
+            DbService.executeUpdate(query2,null);
+            DbService.executeUpdate(query3,null);
+            DbService.executeUpdate(query4,null);
         } catch (SQLException e) {
             e.printStackTrace();
         }
