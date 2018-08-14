@@ -6,6 +6,7 @@
 Car_Workshop.iml
 
 src/main/java/pl/coderslab/servlet/EmployeeTester.java
+src/main/java/pl/coderslab/servlet/StatusTester.java
 
 # User-specific stuff:
 .idea/**/workspace.xml
