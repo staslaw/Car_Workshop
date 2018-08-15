@@ -42,6 +42,6 @@
 </c:forEach>
 </table>
 <a href="/clientForm.jsp?id=0">dodaj</a>
-</body>
 <jsp:include page="WEB-INF/fragments/footer.jsp"/>
+</body>
 </html>

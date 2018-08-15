@@ -1,3 +1,4 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%--
   Created by IntelliJ IDEA.
   User: staszek
@@ -13,14 +14,28 @@
 <body>
 <jsp:include page="WEB-INF/fragments/header.jsp"/>
 
-<br>
-<br>
-<br>
-treść strony
-<br>
-<br>
-<br>
 
-</body>
+<table border="1">
+    <tr>
+        <th>id naprawy</th>
+        <th>pracownik</th>
+        <th>samochód</th>
+        <th>nr rej</th>
+        <th>data rozpoczęcia naprawy</th>
+        <th>szczegóły</th>
+    </tr>
+    <c:forEach var="element" items="${orderList}">
+        <tr>
+            <td>${element.id}</td>
+            <td>${element.employee.firstName} ${element.employee.lastName}</td>
+            <td>${element.vehicle.make}</td>
+            <td>${element.vehicle.registration}</td>
+            <td>${element.serviceStart}</td>
+            <td>szczegóły</td>
+        </tr>
+    </c:forEach>
+</table>
+
 <jsp:include page="WEB-INF/fragments/footer.jsp"/>
+</body>
 </html>

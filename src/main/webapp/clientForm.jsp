@@ -24,6 +24,6 @@
     <input type='submit' value='zapisz'>
 </form>
 
-</body>
 <jsp:include page="WEB-INF/fragments/footer.jsp"/>
+</body>
 </html>
