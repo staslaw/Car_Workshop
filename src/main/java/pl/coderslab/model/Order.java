@@ -26,6 +26,7 @@ public class Order {
         setIssueDesc(issueDesc);
         setStatus(status);
         setEmployee(employee);
+        setHourlyRate(this.employee.getHourly_rate());
     }
 
     public int getId() {
