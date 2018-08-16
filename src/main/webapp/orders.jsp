@@ -42,8 +42,8 @@
                     <c:set var = "repairCost" value ="${order.repairCost}"/><fmt:formatNumber value = "${repairCost}" type="number" groupingUsed = "false" minFractionDigits="2" maxFractionDigits="2" />
                 </c:if>
             </td>
-            <td><a href="order/details?id=${order.id}">szczegóły</a></td>
-            <td><a href="order/update?id=${order.id}">edytuj</a></td>
+            <td><a href="/order/details?id=${order.id}">szczegóły</a></td>
+            <td><a href="/order/update?id=${order.id}">edytuj</a></td>
             <td><a href="#">usuń</a></td>
         </tr>
     </c:forEach>

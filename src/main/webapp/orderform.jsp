@@ -105,11 +105,11 @@
     Opis naprawy:
     <input type='text' name='repairDesc' value='${order.repairDesc}'><br>
     Koszty wykorzystanych części:
-    <input type='number' step="0.01" name='partsCost' max="99999.99" value='${order.partsCost}' id="parts-cost" class="costs-counting"><br>
+    <input type='number' step="0.01" name='partsCost' min="0.01" max="99999.99" value='${order.partsCost}' id="parts-cost" class="costs-counting"><br>
     Koszt roboczogodziny:
     <input type='number' id="hourly-rate" readonly value='${order.hourlyRate}' class="costs-counting"><br>
     Ilość roboczogodzin:
-    <input type='number' step="1" name="manHours" value='${order.manHours}' id ="man-hours" class="costs-counting"><br>
+    <input type='number' step="1" min="1" name="manHours" value='${order.manHours}' id ="man-hours" class="costs-counting"><br>
     Status:
     <select name='status'>
         <c:forEach items="${statuses}" var="status">
