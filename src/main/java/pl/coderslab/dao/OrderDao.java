@@ -11,11 +11,12 @@ public class OrderDao {
 
     public static void save(Order order){
         if(order.getId()==0){
-            String query = "INSERT INTO Orders(employee_id, vehicle_id, status_id, service_accept, service_plan, issue_description, hourly_rate) VALUES (?,?,?,NOW(),?,?,?)";
+            String query = "INSERT INTO Orders(employee_id, vehicle_id, status_id, service_accept, service_plan, issue_description, hourly_rate) VALUES (?,?,?,?,?,?,?)";
             List<String> params = new ArrayList<>();
             params.add(String.valueOf(order.getEmployee().getId()));
             params.add(String.valueOf(order.getVehicle().getId()));
             params.add(String.valueOf(order.getStatus().getId()));
+            params.add(order.getServiceAccept());
             params.add(order.getServicePlan());
             params.add(order.getIssueDesc());
             params.add(String.valueOf(order.getHourlyRate()));
