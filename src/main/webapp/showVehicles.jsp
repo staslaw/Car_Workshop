@@ -3,12 +3,17 @@
 
 <html>
 <head>
-    <title>Title</title>
+    <title>Pojazdy</title>
 </head>
 <body>
 <jsp:include page="WEB-INF/fragments/header.jsp"/>
-<h2>Vehicles:</h2>
-<h3 align="center"><a href="/addVehicle">Add Vehicle</a></h3>
+<h2>Lista pojazdów:</h2>
+
+    <form action="/showAllVehicles" method="post">
+        <fieldset>Klient: <input type="text" name="find" >
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><a href="/addVehicle">Add Vehicle</a></b>
+        </fieldset>
+    </form>
 
 <table border="1">
     <tr>

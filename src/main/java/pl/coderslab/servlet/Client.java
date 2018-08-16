@@ -8,12 +8,26 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet(name = "Client", urlPatterns = "/Client")
 public class Client extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        String find = request.getParameter("find");
+        List<pl.coderslab.model.Client> clientAll = ClientDao.loadAll();
+        List<pl.coderslab.model.Client> clientList = new ArrayList<>();
+        for (int i = 0; i < clientAll.size(); i++) {
+            if (find.equals(clientAll.get(i).getLastName())) {
+                clientList.add(clientAll.get(i));
+            }
+        }
+        if (clientList.isEmpty()) {
+            getServletContext().getRequestDispatcher("/Client").forward(request, response);
+        } else {
+            request.setAttribute("clientList", clientList);
+            getServletContext().getRequestDispatcher("/client.jsp").forward(request, response);
+        }
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
