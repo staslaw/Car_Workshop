@@ -34,7 +34,7 @@ public class Order extends HttpServlet {
             List<pl.coderslab.model.Order> orderList = OrderDao.loadAllByEmployeeId(id);
             Employee employee = EmployeeDao.loadById(id);
             request.setAttribute("orderList", orderList);
-            request.setAttribute("employee",employee);
+            request.setAttribute("chosedEmployee",employee);
 
             getServletContext().getRequestDispatcher("/orders.jsp").forward(request, response);
         }
