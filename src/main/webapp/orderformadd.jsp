@@ -50,11 +50,11 @@
 <p style="color:red">${formInfo}</p>
 <form action='' method='post'>
     Data przyjęcia do naprawy:
-    <input type='date' name='serviceAccept' value='${serviceAccept}'><br>
+    <input type='date' name='serviceAccept' value='${serviceAccept}' required><br>
     Planowana data rozpoczęcia naprawy:
-    <input type='date' name='servicePlan' value='${servicePlan}'><br>
+    <input type='date' name='servicePlan' value='${servicePlan}' ><br>
     Pojazd:
-    <select name='vehicle' id="vehicle">
+    <select name='vehicle' id="vehicle" required>
         <option value="">Wybierz samochód:</option>
         <c:forEach items="${vehicles}" var="vehicle">
             <option <c:if test="${vehicle.id == chosedVehicle.id}">selected</c:if> value="${vehicle.id}">
@@ -65,7 +65,7 @@
     Właściciel pojazdu:
     <input type='text' id='vehicleOwner' readonly  value='${chosedVehicle.client.firstName} ${chosedVehicle.client.lastName}'><br>
     Pracownik:
-    <select name='employee' id="employee" class="costs-counting">
+    <select name='employee' id="employee" class="costs-counting" required>
         <c:forEach items="${employees}" var="employee">
             <option <c:if test="${employee.id == chosedEmployee.id}">selected</c:if> value="${employee.id}" data-hourly-rate="${employee.hourly_rate}">
                     ${employee.firstName} ${employee.lastName} (stawka: ${employee.hourly_rate} zł/h)
@@ -73,7 +73,7 @@
         </c:forEach>
     </select><br>
     Opis problemu:
-    <input type='text' name='issueDesc' value='${issueDesc}'><br>
+    <input type='text' name='issueDesc' value='${issueDesc}' required><br>
     <input type='submit' value='zapisz'>
 </form>
 <jsp:include page="WEB-INF/fragments/footer.jsp"/>

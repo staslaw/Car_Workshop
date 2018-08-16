@@ -18,9 +18,9 @@
     <input type='text' name='firstName' value='' required>imię<br>
     <input type='text' name='lastName' value='' required>nazwisko<br>
     <input type='text' name='address' value='' required>adres<br>
-    <input type='tel' name='phone' value='' placeholder="600500400" pattern="[0-9]{9,}" required>telefon<br>
+    <input type='tel' name='phone' value='' maxlength="15" placeholder="600500400" pattern="[0-9]{9,}" required>telefon<br>
     <input type='text' name='note' value='' required>opis<br>
-    <input type='number' name='hourly_rate' value='' min='10' max='100' step='1' required>stawka godzinowa<br>
+    <input type='number' name='hourly_rate' value='' min='10' max='400' step='1' required>stawka godzinowa<br>
     <input type='submit' value='zapisz'>
 </form>
 

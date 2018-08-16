@@ -87,7 +87,7 @@
     Właściciel pojazdu:
     <input type='text' id='vehicleOwner' readonly  value='${order.vehicle.client.firstName} ${order.vehicle.client.lastName}'><br>
     Data przyjęcia do naprawy:
-    <input type='date' name='serviceAccept' value='${order.serviceAccept}'><br>
+    <input type='date' name='serviceAccept' value='${order.serviceAccept}' required><br>
     Planowana data rozpoczęcia naprawy:
     <input type='date' name='servicePlan' value='${order.servicePlan}'><br>
     Data rozpoczęcia naprawy:
@@ -101,11 +101,11 @@
         </c:forEach>
     </select><br>
     Opis problemu:
-    <input type='text' name='issueDesc' value='${order.issueDesc}'><br>
+    <input type='text' name='issueDesc' value='${order.issueDesc}' required><br>
     Opis naprawy:
     <input type='text' name='repairDesc' value='${order.repairDesc}'><br>
     Koszty wykorzystanych części:
-    <input type='number' step="0.01" name='partsCost' value='${order.partsCost}' id="parts-cost" class="costs-counting"><br>
+    <input type='number' step="0.01" name='partsCost' max="99999.99" value='${order.partsCost}' id="parts-cost" class="costs-counting"><br>
     Koszt roboczogodziny:
     <input type='number' id="hourly-rate" readonly value='${order.hourlyRate}' class="costs-counting"><br>
     Ilość roboczogodzin:
@@ -119,7 +119,7 @@
         </c:forEach>
     </select><br>
     Całkowity koszt:
-    <input type='number' step="0.01" disabled id="total-cost" max="99999.99"
+    <input type='number' step="0.01" readonly id="total-cost" max="99999.99"
            value='<c:if test="${order.repairCost != 0}">${repairCost}</c:if>'><br>
     <input type='submit' value='zapisz'>
 </form>
