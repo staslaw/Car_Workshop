@@ -7,8 +7,8 @@
 </head>
 <body>
 <jsp:include page="WEB-INF/fragments/header.jsp"/>
-<h3>Vehicles:</h3>
-<h2 align="center"><a href="/addVehicle">Add Vehicle</a></h2>
+<h2>Vehicles:</h2>
+<h3 align="center"><a href="/addVehicle">Add Vehicle</a></h3>
 
 <table border="1">
     <tr>
@@ -19,6 +19,7 @@
         <th>Registration</th>
         <th>Next service</th>
         <th>Client name</th>
+        <th>Repairs history</th>
         <%--<th>Edit</th>--%>
         <%--<th>Remove</th>--%>
     </tr>
@@ -31,6 +32,7 @@
             <td>${element.registration}</td>
             <td>${element.nextService}</td>
             <td>${element.client.firstName}&nbsp;${element.client.lastName}</td>
+            <td>***repairs history***</td>
             <td><a href="/updateVehicle?id=${element.id}">Update</a></td>
             <td><a href="/deleteVehicle?id=${element.id}">Delete</a></td>
         </tr>
