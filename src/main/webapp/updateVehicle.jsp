@@ -5,7 +5,7 @@
     <title>Title</title>
 </head>
 <body>
-
+<jsp:include page="WEB-INF/fragments/header.jsp"/>
 <form action='' method='post'>
     Model:
     <input type='text' name='model' value='${vehicle.model}'><br>
@@ -22,6 +22,6 @@
 
     <input type='submit' value='Save'>
 </form>
-
+<jsp:include page="WEB-INF/fragments/footer.jsp"/>
 </body>
 </html>

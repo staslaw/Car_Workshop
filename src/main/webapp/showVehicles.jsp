@@ -6,7 +6,7 @@
     <title>Title</title>
 </head>
 <body>
-
+<jsp:include page="WEB-INF/fragments/header.jsp"/>
 <h3>Vehicles:</h3>
 <h2 align="center"><a href="/addVehicle">Add Vehicle</a></h2>
 
@@ -36,6 +36,6 @@
         </tr>
     </c:forEach>
 </table>
-
+<jsp:include page="WEB-INF/fragments/footer.jsp"/>
 </body>
 </html>

@@ -8,8 +8,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <header>
     <a href="/index.jsp">Strona główna</a>
-    <a href="/Client">Klienci</a>
-    <a href="/Employee">Pracownicy</a>
-    <a href="/orders">Zlecenia</a>
+    <a href="/orders">Repairs</a>
+    <a href="/Employee">Employee</a>
+    <a href="/Client">Clients</a>
+    <a href="/showAllVehicles">Vehicles</a>
+
     <p>----------------------------------------------------------------------</p>
 </header>

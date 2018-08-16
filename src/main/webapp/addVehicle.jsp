@@ -5,7 +5,7 @@
     <title>Title</title>
 </head>
 <body>
-
+<jsp:include page="WEB-INF/fragments/header.jsp"/>
 <form action="" method="post">
     Make:
     <input type="text" name="make" required><br>
@@ -22,6 +22,6 @@
     <br>
     <input type="submit" value="Save">
 </form>
-
+<jsp:include page="WEB-INF/fragments/footer.jsp"/>
 </body>
 </html>
