@@ -15,12 +15,12 @@
 <jsp:include page="WEB-INF/fragments/header.jsp"/>
 
 <form action='/ClientUpdate' method='post'>
-    <input type='text' name='id' value='${param.id}' hidden>
-    <input type='text' name='firstName' value='${param.firstName}' required>imię<br>
-    <input type='text' name='lastName' value='${param.lastName}' required>nazwisko<br>
-    <input type='email' name='email' value='${param.email}' required>email<br>
-    <input type='number' name='phone' value='${param.phone}' min='100000000' max='999999999999' step='1' required>telefon<br>
-    <input type='date' name='birthday' value='${param.birthday}' min='1900-01-01' max='2018-01-01' required>data ur.<br>
+    <input type='text' name='id' value='${client.id}' hidden>
+    <input type='text' name='firstName' value='${client.firstName}' required>imię<br>
+    <input type='text' name='lastName' value='${client.lastName}' required>nazwisko<br>
+    <input type='email' name='email' value='${client.email}' required>email<br>
+    <input type='number' name='phone' value='${client.phone}' min='100000000' max='999999999999' step='1' required>telefon<br>
+    <input type='date' name='birthday' value='${client.birthday}' min='1900-01-01' max='2018-01-01' required>data ur.<br>
     <input type='submit' value='zapisz'>
 </form>
 

@@ -14,13 +14,13 @@
 <jsp:include page="WEB-INF/fragments/header.jsp"/>
 
 <form action='/EmployeeUpdate' method='post'>
-    <input type='text' name='id' value='${param.id}' hidden>
-    <input type='text' name='firstName' value='${param.firstName}' required>imię<br>
-    <input type='text' name='lastName' value='${param.lastName}' required>nazwisko<br>
-    <input type='text' name='address' value='${param.address}' required>adres<br>
-    <input type='number' name='phone' value='${param.phone}' min='100000000' max='999999999999' step='1' required>telefon<br>
-    <input type='text' name='note' value='${param.note}' required>opis<br>
-    <input type='number' name='hourly_rate' value='${param.hourly_rate}' min='1' max='100' step='0.1' required>stawka godzinowa<br>
+    <input type='text' name='id' value='${employee.id}' hidden>
+    <input type='text' name='firstName' value='${employee.firstName}' required>imię<br>
+    <input type='text' name='lastName' value='${employee.lastName}' required>nazwisko<br>
+    <input type='text' name='address' value='${employee.address}' required>adres<br>
+    <input type='number' name='phone' value='${employee.phone}' min='100000000' max='999999999999' step='1' required>telefon<br>
+    <input type='text' name='note' value='${employee.note}' required>opis<br>
+    <input type='number' name='hourly_rate' value='${employee.hourly_rate}' min='1' max='100' step='0.1' required>stawka godzinowa<br>
     <input type='submit' value='zapisz'>
     </form>
 

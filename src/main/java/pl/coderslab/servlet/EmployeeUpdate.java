@@ -31,5 +31,9 @@ public class EmployeeUpdate extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    int id = Integer.parseInt(request.getParameter("id"));
+    Employee employee = EmployeeDao.loadById(id);
+    request.setAttribute("employee", employee);
+    getServletContext().getRequestDispatcher("/employeeForm.jsp").forward(request, response);
     }
 }
