@@ -11,13 +11,14 @@ public class OrderDao {
 
     public static void save(Order order){
         if(order.getId()==0){
-            String query = "INSERT INTO Orders(employee_id, vehicle_id, status_id, service_accept, service_plan, issue_description) VALUES (?,?,?,NOW(),?,?)";
+            String query = "INSERT INTO Orders(employee_id, vehicle_id, status_id, service_accept, service_plan, issue_description, hourly_rate) VALUES (?,?,?,NOW(),?,?,?)";
             List<String> params = new ArrayList<>();
             params.add(String.valueOf(order.getEmployee().getId()));
             params.add(String.valueOf(order.getVehicle().getId()));
             params.add(String.valueOf(order.getStatus().getId()));
             params.add(order.getServicePlan());
             params.add(order.getIssueDesc());
+            params.add(String.valueOf(order.getHourlyRate()));
 
             try {
                 Integer id = DbService.insertIntoDatabase(query,params);
@@ -57,7 +58,7 @@ public class OrderDao {
     }
 
     public static List<Order> loadAll(){
-        String query = "SELECT * FROM Orders";
+        String query = "SELECT * FROM Orders ORDER BY service_accept DESC";
         return getOrdersFromQuery(query,null);
 
     }
@@ -81,18 +82,26 @@ public class OrderDao {
 
             if(rows.get(0)[9] != null) {
                 order.setRepairCost(Double.parseDouble(rows.get(0)[9]));
+            } else {
+                order.setRepairCost(null);
             }
 
             if(rows.get(0)[10] != null) {
                 order.setPartsCost(Double.parseDouble(rows.get(0)[10]));
+            } else {
+                order.setPartsCost(null);
             }
 
             if(rows.get(0)[11] != null) {
                 order.setHourlyRate(Double.parseDouble(rows.get(0)[11]));
+            } else {
+                order.setHourlyRate(null);
             }
 
             if(rows.get(0)[12] != null) {
                 order.setManHours(Integer.parseInt(rows.get(0)[12]));
+            } else {
+                order.setManHours(null);
             }
 
             return order;

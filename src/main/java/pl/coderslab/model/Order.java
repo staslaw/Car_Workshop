@@ -11,10 +11,10 @@ public class Order {
     private String serviceStart;
     private String issueDesc;
     private String repairDesc;
-    private double repairCost;
-    private double partsCost;
-    private double hourlyRate;
-    private int manHours;
+    private Double repairCost;
+    private Double partsCost;
+    private Double hourlyRate;
+    private Integer manHours;
 
     public Order() {
     }
@@ -26,6 +26,7 @@ public class Order {
         setIssueDesc(issueDesc);
         setStatus(status);
         setEmployee(employee);
+        setHourlyRate(this.employee.getHourly_rate());
     }
 
     public int getId() {
@@ -100,35 +101,35 @@ public class Order {
         this.repairDesc = repairDesc;
     }
 
-    public double getRepairCost() {
+    public Double getRepairCost() {
         return repairCost;
     }
 
-    public void setRepairCost(double repairCost) {
+    public void setRepairCost(Double repairCost) {
         this.repairCost = repairCost;
     }
 
-    public double getPartsCost() {
+    public Double getPartsCost() {
         return partsCost;
     }
 
-    public void setPartsCost(double partsCost) {
+    public void setPartsCost(Double partsCost) {
         this.partsCost = partsCost;
     }
 
-    public double getHourlyRate() {
+    public Double getHourlyRate() {
         return hourlyRate;
     }
 
-    public void setHourlyRate(double hourlyRate) {
+    public void setHourlyRate(Double hourlyRate) {
         this.hourlyRate = hourlyRate;
     }
 
-    public int getManHours() {
+    public Integer getManHours() {
         return manHours;
     }
 
-    public void setManHours(int manHours) {
+    public void setManHours(Integer manHours) {
         this.manHours = manHours;
     }
 
