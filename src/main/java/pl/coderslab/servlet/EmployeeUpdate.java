@@ -16,6 +16,7 @@ import java.util.Calendar;
 @WebServlet(name = "EmployeeUpdate", urlPatterns = "/EmployeeUpdate")
 public class EmployeeUpdate extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
         int id = Integer.parseInt(request.getParameter("id"));
         String firstName = request.getParameter("firstName");
         String lastName = request.getParameter("lastName");
@@ -31,9 +32,10 @@ public class EmployeeUpdate extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    int id = Integer.parseInt(request.getParameter("id"));
-    Employee employee = EmployeeDao.loadById(id);
-    request.setAttribute("employee", employee);
-    getServletContext().getRequestDispatcher("/employeeForm.jsp").forward(request, response);
+
+        int id = Integer.parseInt(request.getParameter("id"));
+        Employee employee = EmployeeDao.loadById(id);
+        request.setAttribute("employee", employee);
+        getServletContext().getRequestDispatcher("/employeeForm.jsp").forward(request, response);
     }
 }

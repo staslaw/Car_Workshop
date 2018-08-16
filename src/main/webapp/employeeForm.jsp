@@ -18,9 +18,9 @@
     <input type='text' name='firstName' value='${employee.firstName}' required>imię<br>
     <input type='text' name='lastName' value='${employee.lastName}' required>nazwisko<br>
     <input type='text' name='address' value='${employee.address}' required>adres<br>
-    <input type='number' name='phone' value='${employee.phone}' min='100000000' max='999999999999' step='1' required>telefon<br>
+    <input type='text' name='phone' required>telefon<br>
     <input type='text' name='note' value='${employee.note}' required>opis<br>
-    <input type='number' name='hourly_rate' value='${employee.hourly_rate}' min='1' max='100' step='0.1' required>stawka godzinowa<br>
+    <input type='number' name='hourly_rate' value='${employee.hourly_rate}' min='10' max='100' step='1' required>stawka godzinowa<br>
     <input type='submit' value='zapisz'>
     </form>
 

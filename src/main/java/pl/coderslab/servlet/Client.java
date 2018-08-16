@@ -17,6 +17,7 @@ public class Client extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
         List<pl.coderslab.model.Client> clientList = ClientDao.loadAll();
         request.setAttribute("clientList", clientList);
         getServletContext().getRequestDispatcher("/client.jsp").forward(request, response);

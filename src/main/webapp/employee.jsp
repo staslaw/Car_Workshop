@@ -14,6 +14,12 @@
 <body>
 <jsp:include page="WEB-INF/fragments/header.jsp"/>
 
+<form action="/EmployeeFind" method="get">
+    <fieldset>wyszukaj klienta po nazwisku
+        <input type="text" name="find">
+    </fieldset>
+</form>
+
 <table border="1">
     <tr>
         <th>id</th>
