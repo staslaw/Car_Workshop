@@ -1,6 +1,8 @@
 package pl.coderslab.servlet;
 
+import pl.coderslab.dao.EmployeeDao;
 import pl.coderslab.dao.OrderDao;
+import pl.coderslab.model.Employee;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -30,7 +32,10 @@ public class Order extends HttpServlet {
 
             int id = Integer.valueOf(idParam);
             List<pl.coderslab.model.Order> orderList = OrderDao.loadAllByEmployeeId(id);
+            Employee employee = EmployeeDao.loadById(id);
             request.setAttribute("orderList", orderList);
+            request.setAttribute("chosedEmployee",employee);
+
             getServletContext().getRequestDispatcher("/orders.jsp").forward(request, response);
         }
     }
