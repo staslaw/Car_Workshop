@@ -66,7 +66,13 @@
 </head>
 <body>
 <jsp:include page="WEB-INF/fragments/header.jsp"/>
-<p style="color:red">${formInfo}</p>
+<p>
+    <ul style="color:red">
+        <c:forEach items="${formInfo}" var="info">
+            <li>${info}</li>
+        </c:forEach>
+    </ul>
+</p>
 <form id="order-editing" action='' method='post'>
     Id Zlecenia:
     <input name="orderId" type='number' value='${order.id}' readonly><br>

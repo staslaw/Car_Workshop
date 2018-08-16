@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet(name = "OrderUpdate", urlPatterns = {"/order/update","/order/add"})
@@ -65,7 +66,7 @@ public class OrderUpdate extends HttpServlet {
         int statusId = 3;
         int orderId = 0;
 
-        if(!vehicleIdParam.isEmpty() && !employeeIdParam.isEmpty() && !serviceAccept.isEmpty() && !issueDesc.isEmpty()) {
+        if(!vehicleIdParam.isEmpty() && !employeeIdParam.isEmpty() && !issueDesc.isEmpty()) {
 
             int vehicleId = Integer.valueOf(vehicleIdParam);
             int employeeId = Integer.valueOf(employeeIdParam);
@@ -101,7 +102,7 @@ public class OrderUpdate extends HttpServlet {
             order.setPartsCost(partsCost);
             order.setManHours(manHours);
             order.setStatus(StatusDao.loadById(statusId));
-            order.setRepairCost(null);
+//            order.setRepairCost(null);
 
             if("/order/update".equalsIgnoreCase(servletPath)) {
 
@@ -113,24 +114,35 @@ public class OrderUpdate extends HttpServlet {
 
                 Double totalCostDouble = totalcost.doubleValue();
 
-                if(totalCostDouble <= 99999.99) {
-                    order.setRepairCost(totalCostDouble);
-                } else {
-                    String formInfo = "Chyba trochę przesadziłeś z kosztami?";
-                    request.setAttribute("formInfo",formInfo);
-                    List<Vehicle> vehicles = VehicleDao.loadAll();
-                    List<Employee> employees = EmployeeDao.loadAll();
-                    List<Status> statuses = StatusDao.loadAll();
+                List<String> formInfo = new ArrayList<>();
+
+                boolean validated = true;
+
+                if(totalCostDouble > 99999.99 || serviceAccept == null || serviceAccept.isEmpty()) {
 
                     Order orderBack = OrderDao.loadById(orderId);
-                    order.setPartsCost(orderBack.getRepairCost());
-                    order.setManHours(orderBack.getManHours());
 
-                    request.setAttribute("vehicles", vehicles);
-                    request.setAttribute("employees", employees);
-                    request.setAttribute("order",order);
-                    request.setAttribute("statuses", statuses);
-                    getServletContext().getRequestDispatcher("/orderform.jsp").forward(request, response);
+                    if(totalCostDouble > 99999.99) {
+                        validated = false;
+                        String info = "Chyba trochę przesadziłeś z kosztami?";
+                        formInfo.add(info);
+
+                        order.setPartsCost(orderBack.getRepairCost());
+                        order.setManHours(orderBack.getManHours());
+                    }
+
+                    if(serviceAccept == null || serviceAccept.isEmpty()) {
+                        validated = false;
+                        String info = "Data przyjęcia zlecenia nie może być pusta";
+                        formInfo.add(info);
+                        order.setServiceAccept(orderBack.getServiceAccept());
+                    }
+                }
+
+                if(validated){
+                    order.setRepairCost(totalCostDouble);
+                } else {
+                    backtoFormWithInfo(request, response, order, formInfo);
                 }
 
             }
@@ -166,6 +178,19 @@ public class OrderUpdate extends HttpServlet {
         }
 
 
+    }
+
+    private void backtoFormWithInfo(HttpServletRequest request, HttpServletResponse response, Order order, List<String> formInfo) throws ServletException, IOException {
+        List<Vehicle> vehicles = VehicleDao.loadAll();
+        List<Employee> employees = EmployeeDao.loadAll();
+        List<Status> statuses = StatusDao.loadAll();
+
+        request.setAttribute("formInfo",formInfo);
+        request.setAttribute("vehicles", vehicles);
+        request.setAttribute("employees", employees);
+        request.setAttribute("order",order);
+        request.setAttribute("statuses", statuses);
+        getServletContext().getRequestDispatcher("/orderform.jsp").forward(request, response);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
