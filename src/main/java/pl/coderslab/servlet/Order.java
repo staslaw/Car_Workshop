@@ -2,7 +2,9 @@ package pl.coderslab.servlet;
 
 import pl.coderslab.dao.EmployeeDao;
 import pl.coderslab.dao.OrderDao;
+import pl.coderslab.dao.VehicleDao;
 import pl.coderslab.model.Employee;
+import pl.coderslab.model.Vehicle;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "Order", urlPatterns = {"/orders","/orders/employee"})
+@WebServlet(name = "Order", urlPatterns = {"/orders","/orders/employee","/orders/vehicle"})
 public class Order extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -44,6 +46,23 @@ public class Order extends HttpServlet {
 
                 getServletContext().getRequestDispatcher("/orders.jsp").forward(request, response);
             }
+        }
+
+        if("/orders/vehicle".equalsIgnoreCase(servletPath)) {
+
+            String idParam = request.getParameter("id");
+            if(idParam == null || idParam.isEmpty()) {
+                response.sendRedirect("/showAllVehicles");
+            } else {
+                int id = Integer.valueOf(idParam);
+                List<pl.coderslab.model.Order> orderList = OrderDao.loadAllByVehicleId(id);
+                Vehicle vehicle = VehicleDao.loadById(id);
+                request.setAttribute("orderList", orderList);
+                request.setAttribute("chosedVehicle",vehicle);
+
+                getServletContext().getRequestDispatcher("/orders.jsp").forward(request, response);
+            }
+
         }
 
     }

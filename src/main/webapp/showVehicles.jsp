@@ -32,7 +32,7 @@
             <td>${element.registration}</td>
             <td>${element.nextService}</td>
             <td>${element.client.firstName}&nbsp;${element.client.lastName}</td>
-            <td>***repairs history***</td>
+            <td><a href="/orders/vehicle?id=${element.id}">Check History</a></td>
             <td><a href="/updateVehicle?id=${element.id}">Update</a></td>
             <td><a href="/deleteVehicle?id=${element.id}">Delete</a></td>
         </tr>
