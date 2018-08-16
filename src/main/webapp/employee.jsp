@@ -9,14 +9,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>Pracownicy</title>
 </head>
 <body>
 <jsp:include page="WEB-INF/fragments/header.jsp"/>
-
-<form action="/EmployeeFind" method="get">
-    <fieldset>wyszukaj klienta po nazwisku
-        <input type="text" name="find">
+<h2>Lista pracowników:</h2>
+<form action="/Employee" method="post">
+    <fieldset>Wyszukaj pracownika po nazwisku: <input type="text" name="find">
     </fieldset>
 </form>
 
