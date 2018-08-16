@@ -58,7 +58,7 @@ public class OrderDao {
     }
 
     public static List<Order> loadAll(){
-        String query = "SELECT * FROM Orders";
+        String query = "SELECT * FROM Orders ORDER BY service_accept DESC";
         return getOrdersFromQuery(query,null);
 
     }
@@ -82,18 +82,26 @@ public class OrderDao {
 
             if(rows.get(0)[9] != null) {
                 order.setRepairCost(Double.parseDouble(rows.get(0)[9]));
+            } else {
+                order.setRepairCost(null);
             }
 
             if(rows.get(0)[10] != null) {
                 order.setPartsCost(Double.parseDouble(rows.get(0)[10]));
+            } else {
+                order.setPartsCost(null);
             }
 
             if(rows.get(0)[11] != null) {
                 order.setHourlyRate(Double.parseDouble(rows.get(0)[11]));
+            } else {
+                order.setHourlyRate(null);
             }
 
             if(rows.get(0)[12] != null) {
                 order.setManHours(Integer.parseInt(rows.get(0)[12]));
+            } else {
+                order.setManHours(null);
             }
 
             return order;
