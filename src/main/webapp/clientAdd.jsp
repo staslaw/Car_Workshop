@@ -18,7 +18,7 @@
     <input type='text' name='firstName' value='' required>imię<br>
     <input type='text' name='lastName' value='' required>nazwisko<br>
     <input type='email' name='email' value='' required>email<br>
-    <input type='text' name='phone' required>telefon<br>
+    <input type='tel' name='phone' placeholder="600500400" pattern="[0-9]{9,}" required>telefon<br>
     <input type='date' name='birthday' value='' min='1900-01-01' max='2018-01-01' required>data ur.<br>
     <input type='submit' value='zapisz'>
 </form>
