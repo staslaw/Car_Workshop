@@ -23,8 +23,8 @@ public class VehicleShow extends HttpServlet {
             List<pl.coderslab.model.Client> clientList = new ArrayList<>();
             for (int i = 0; i < clientAll.size(); i++) {
                 String lastName = clientAll.get(i).getLastName().toLowerCase();
-                int length = lastName.length();
-                if (lastName.equals(find) || lastName.substring(0, 1).equals(find)) {
+                int length = find.length();
+                if (lastName.equals(find) || lastName.substring(0,length).equals(find)) {
                     clientList.add(clientAll.get(i));
                 }
             }

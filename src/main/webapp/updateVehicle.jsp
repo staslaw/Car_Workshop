@@ -8,17 +8,17 @@
 <jsp:include page="WEB-INF/fragments/header.jsp"/>
 <form action='' method='post'>
     Model:
-    <input type='text' name='model' value='${vehicle.model}'><br>
+    <input type='text' name='model' value='${vehicle.model}' required><br>
     Make:
-    <input type='text' name='make' value='${vehicle.make}'><br>
+    <input type='text' name='make' value='${vehicle.make}' required><br>
     Production date:
-    <input type='date' name='productionDate' value='${vehicle.productionDate}'><br>
+    <input type='date' name='productionDate' value='${vehicle.productionDate}' required><br>
     Registration:
-    <input type='text' name='registration' value='${vehicle.registration}'><br>
+    <input type='text' name='registration' value='${vehicle.registration}' required><br>
     Next service:
-    <input type='date' name='nextService' value='${vehicle.nextService}'><br>
+    <input type='date' name='nextService' value='${vehicle.nextService}' required><br>
     Client id:
-    <input type='number' min="1" name='clientId' value='${vehicle.client.id}'><br><br>
+    <input type='number' min="1" name='clientId' value='${vehicle.client.id}' required><br><br>
 
     <input type='submit' value='Save'>
 </form>
