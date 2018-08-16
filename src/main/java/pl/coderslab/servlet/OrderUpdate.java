@@ -63,7 +63,8 @@ public class OrderUpdate extends HttpServlet {
             serviceStart = null;
         }
 
-        int statusId = 3;
+        // Zakładam, że status 'Przyjęty' jest pod id 1.
+        int statusId = 1;
         int orderId = 0;
 
         if(!vehicleIdParam.isEmpty() && !employeeIdParam.isEmpty() && !issueDesc.isEmpty()) {
@@ -102,7 +103,6 @@ public class OrderUpdate extends HttpServlet {
             order.setPartsCost(partsCost);
             order.setManHours(manHours);
             order.setStatus(StatusDao.loadById(statusId));
-//            order.setRepairCost(null);
 
             if("/order/update".equalsIgnoreCase(servletPath)) {
 
@@ -180,19 +180,6 @@ public class OrderUpdate extends HttpServlet {
 
     }
 
-    private void backtoFormWithInfo(HttpServletRequest request, HttpServletResponse response, Order order, List<String> formInfo) throws ServletException, IOException {
-        List<Vehicle> vehicles = VehicleDao.loadAll();
-        List<Employee> employees = EmployeeDao.loadAll();
-        List<Status> statuses = StatusDao.loadAll();
-
-        request.setAttribute("formInfo",formInfo);
-        request.setAttribute("vehicles", vehicles);
-        request.setAttribute("employees", employees);
-        request.setAttribute("order",order);
-        request.setAttribute("statuses", statuses);
-        getServletContext().getRequestDispatcher("/orderform.jsp").forward(request, response);
-    }
-
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         String servletPath = request.getServletPath();
@@ -223,12 +210,18 @@ public class OrderUpdate extends HttpServlet {
 
             getServletContext().getRequestDispatcher("/orderform.jsp").forward(request, response);
         }
+    }
 
+    private void backtoFormWithInfo(HttpServletRequest request, HttpServletResponse response, Order order, List<String> formInfo) throws ServletException, IOException {
+        List<Vehicle> vehicles = VehicleDao.loadAll();
+        List<Employee> employees = EmployeeDao.loadAll();
+        List<Status> statuses = StatusDao.loadAll();
 
-
-
-
-
-
+        request.setAttribute("formInfo",formInfo);
+        request.setAttribute("vehicles", vehicles);
+        request.setAttribute("employees", employees);
+        request.setAttribute("order",order);
+        request.setAttribute("statuses", statuses);
+        getServletContext().getRequestDispatcher("/orderform.jsp").forward(request, response);
     }
 }
