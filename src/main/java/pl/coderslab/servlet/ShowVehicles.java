@@ -1,5 +1,6 @@
 package pl.coderslab.servlet;
 
+import pl.coderslab.dao.VehicleDao;
 import pl.coderslab.model.Vehicle;
 
 import javax.servlet.ServletException;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 @WebServlet(name = "ShowVehicles", urlPatterns = "/showAllVehicles")
 public class ShowVehicles extends HttpServlet {
@@ -19,14 +21,10 @@ public class ShowVehicles extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        response.setContentType("text/html; charset=utf-8");
-        HttpSession session = request.getSession();
-        ArrayList<Vehicle> vehicles = (ArrayList<Vehicle>) session.getAttribute("vehicles");
-        if (vehicles != null && !vehicles.isEmpty()) {
-            for (Vehicle all : vehicles){
-                System.out.println(all);
-            }
-            request.getRequestDispatcher("/showallvehicles.jsp").forward(request, response);
+        List<pl.coderslab.model.Vehicle> vehicleList = VehicleDao.loadAll();
+        if(vehicleList != null & !vehicleList.isEmpty()) {
+            request.setAttribute("vehicleList", vehicleList);
+            request.getRequestDispatcher("/showVehicles.jsp").forward(request, response);
         } else {
             response.getWriter().append("THERE ARE NO VEHICLES");
         }

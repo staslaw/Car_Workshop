@@ -11,12 +11,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
-@WebServlet(name = "AddVehicle", urlPatterns = "/addVehicle")
-public class AddVehicle extends HttpServlet {
+@WebServlet(name = "UpdateVehicle", urlPatterns = "/updateVehicle")
+public class UpdateVehicle extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+        int id = Integer.parseInt(request.getParameter("id"));
         String model = request.getParameter("model");
         String make = request.getParameter("make");
         String productionDate = request.getParameter("productionDate");
@@ -26,6 +26,8 @@ public class AddVehicle extends HttpServlet {
 
         Client client = ClientDao.loadById(idClient);
         Vehicle vehicle = new Vehicle(model, make, productionDate, registration, nextService, client);
+        vehicle.setId(id);
+        client.setId(idClient);
         VehicleDao.save(vehicle);
 
         response.sendRedirect("/showAllVehicles");
@@ -33,9 +35,13 @@ public class AddVehicle extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        List<Client> clientList = ClientDao.loadAll();
-        request.setAttribute("clientList", clientList);
-        getServletContext().getRequestDispatcher("/addVehicle.jsp").forward(request, response);
-
+        int id = Integer.parseInt(request.getParameter("id"));
+        try {
+            Vehicle vehicle = VehicleDao.loadById(id);
+            request.setAttribute("vehicle", vehicle);
+            getServletContext().getRequestDispatcher("/updateVehicle.jsp").forward(request, response);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }

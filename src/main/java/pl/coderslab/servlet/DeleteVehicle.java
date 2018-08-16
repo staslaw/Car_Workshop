@@ -17,9 +17,13 @@ public class DeleteVehicle extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//        Vehicle vehicle = request.getParameter();
+
+        int id = Integer.parseInt(request.getParameter("id"));
         try{
-//            VehicleDao.delete(vehicle);
+            Vehicle vehicle = VehicleDao.loadById(id);
+            VehicleDao.delete(vehicle);
+            response.sendRedirect("/showAllVehicles");
+//            request.getRequestDispatcher("/showVehicles.jsp").forward(request, response);
         } catch (Exception e){
             e.printStackTrace();
         }
