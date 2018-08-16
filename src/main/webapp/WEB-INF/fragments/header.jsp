@@ -10,5 +10,6 @@
     <a href="/index.jsp">Strona główna</a>
     <a href="/Client">Klienci</a>
     <a href="/Employee">Pracownicy</a>
+    <a href="/orders">Zlecenia</a>
     <p>----------------------------------------------------------------------</p>
 </header>
