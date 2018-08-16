@@ -21,7 +21,7 @@
     </fieldset>
 </form>
 
-
+<h2>Lista klientów:<c:if test="${!empty chosedClient}"> ${chosedClient.firstName} ${chosedClient.lastName}</c:if></h2>
 <table border="1">
     <tr>
         <th>id</th>

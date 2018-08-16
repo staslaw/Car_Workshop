@@ -14,7 +14,7 @@
 </head>
 <body>
 <jsp:include page="WEB-INF/fragments/header.jsp"/>
-<h2>Lista zleceń:</h2>
+<h2>Lista zleceń<c:if test="${!empty employee}"> ${employee.firstName} ${employee.lastName}</c:if>:</h2>
 <p>Dodaj nowe zlecenie <a href="/order/add">Dodaj</a></p>
 <table border="1">
     <tr>

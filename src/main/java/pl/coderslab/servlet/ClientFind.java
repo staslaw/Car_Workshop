@@ -31,6 +31,7 @@ public class ClientFind extends HttpServlet {
             getServletContext().getRequestDispatcher("/Client").forward(request, response);
         } else {
             request.setAttribute("clientList", clientList);
+            request.setAttribute("chosedClient", clientList.get(0));
             getServletContext().getRequestDispatcher("/client.jsp").forward(request, response);
         }
     }
