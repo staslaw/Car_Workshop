@@ -26,5 +26,9 @@ public class ClientUpdate extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int id = Integer.parseInt(request.getParameter("id"));
+        Client client = ClientDao.loadById(id);
+        request.setAttribute("client", client);
+        getServletContext().getRequestDispatcher("/clientForm.jsp").forward(request, response);
     }
 }

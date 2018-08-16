@@ -15,6 +15,13 @@
 <body>
 <jsp:include page="WEB-INF/fragments/header.jsp"/>
 
+<form action="/ClientFind" method="get">
+    <fieldset>wyszukaj klienta po nazwisku
+    <input type="text" name="find">
+    </fieldset>
+</form>
+
+
 <table border="1">
     <tr>
         <th>id</th>
@@ -36,12 +43,12 @@
         <td>${element.phone}</td>
         <td>${element.birthday}</td>
         <td>samochody</td>
-        <td><a href="/clientForm.jsp?id=${element.id}&firstName=${element.firstName}&lastName=${element.lastName}&email=${element.email}&phone=${element.phone}&birthday=${element.birthday}">edytuj</a></td>
+        <td><a href="/ClientUpdate?id=${element.id}">edytuj</a></td>
         <td><a href="/ClientDelete?id=${element.id}">usuń</a></td>
     </tr>
 </c:forEach>
 </table>
-<a href="/clientForm.jsp?id=0">dodaj</a>
+<a href="/clientAdd.jsp">dodaj</a>
 <jsp:include page="WEB-INF/fragments/footer.jsp"/>
 </body>
 </html>

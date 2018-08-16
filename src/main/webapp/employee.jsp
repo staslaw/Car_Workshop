@@ -37,12 +37,12 @@
             <td>${element.note}</td>
             <td>${element.hourly_rate}</td>
             <td>zlecenia</td>
-            <td><a href="/employeeForm.jsp?id=${element.id}&firstName=${element.firstName}&lastName=${element.lastName}&address=${element.address}&phone=${element.phone}&note=${element.note}&hourly_rate=${element.hourly_rate}">edytuj</a></td>
+            <td><a href="/EmployeeUpdate?id=${element.id}">edytuj</a></td>
             <td><a href="/EmployeeDelete?id=${element.id}">usuń</a></td>
         </tr>
     </c:forEach>
 </table>
-<a href="/employeeForm.jsp?id=0">dodaj</a>
+<a href="/employeeAdd.jsp">dodaj</a>
 
 <jsp:include page="WEB-INF/fragments/footer.jsp"/>
 </body>
