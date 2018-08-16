@@ -42,7 +42,7 @@
             <td>${element.phone}</td>
             <td>${element.note}</td>
             <td>${element.hourly_rate}</td>
-            <td><a href="/orders?id=${element.id}">Sprawdź zlecenia</a> </td>
+            <td><a href="/orders/employee?id=${element.id}">Sprawdź zlecenia</a> </td>
             <td><a href="/EmployeeUpdate?id=${element.id}">edytuj</a></td>
             <td><a href="/EmployeeDelete?id=${element.id}">usuń</a></td>
         </tr>

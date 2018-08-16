@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "Order", urlPatterns = "/orders")
+@WebServlet(name = "Order", urlPatterns = {"/orders","/orders/employee"})
 public class Order extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -20,23 +20,31 @@ public class Order extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        String idParam = request.getParameter("id");
+        String servletPath = request.getServletPath();
 
-        if(idParam == null || idParam.isEmpty()) {
 
+        if("/orders".equalsIgnoreCase(servletPath)) {
             List<pl.coderslab.model.Order> orderList = OrderDao.loadAll();
             request.setAttribute("orderList", orderList);
             getServletContext().getRequestDispatcher("/orders.jsp").forward(request, response);
-
-        } else {
-
-            int id = Integer.valueOf(idParam);
-            List<pl.coderslab.model.Order> orderList = OrderDao.loadAllByEmployeeId(id);
-            Employee employee = EmployeeDao.loadById(id);
-            request.setAttribute("orderList", orderList);
-            request.setAttribute("chosedEmployee",employee);
-
-            getServletContext().getRequestDispatcher("/orders.jsp").forward(request, response);
         }
+
+        if("/orders/employee".equalsIgnoreCase(servletPath)) {
+
+            String idParam = request.getParameter("id");
+            if(idParam == null || idParam.isEmpty()) {
+                response.sendRedirect("/Employee");
+            } else {
+
+                int id = Integer.valueOf(idParam);
+                List<pl.coderslab.model.Order> orderList = OrderDao.loadAllByEmployeeId(id);
+                Employee employee = EmployeeDao.loadById(id);
+                request.setAttribute("orderList", orderList);
+                request.setAttribute("chosedEmployee",employee);
+
+                getServletContext().getRequestDispatcher("/orders.jsp").forward(request, response);
+            }
+        }
+
     }
 }
