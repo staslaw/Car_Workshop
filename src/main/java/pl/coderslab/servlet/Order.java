@@ -17,10 +17,21 @@ public class Order extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List<pl.coderslab.model.Order> orderList = OrderDao.loadAll();
 
-        request.setAttribute("orderList", orderList);
-        getServletContext().getRequestDispatcher("/orders.jsp").forward(request, response);
+        String idParam = request.getParameter("id");
 
+        if(idParam == null || idParam.isEmpty()) {
+
+            List<pl.coderslab.model.Order> orderList = OrderDao.loadAll();
+            request.setAttribute("orderList", orderList);
+            getServletContext().getRequestDispatcher("/orders.jsp").forward(request, response);
+
+        } else {
+
+            int id = Integer.valueOf(idParam);
+            List<pl.coderslab.model.Order> orderList = OrderDao.loadAllByEmployeeId(id);
+            request.setAttribute("orderList", orderList);
+            getServletContext().getRequestDispatcher("/orders.jsp").forward(request, response);
+        }
     }
 }
