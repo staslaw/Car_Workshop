@@ -8,24 +8,25 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-@WebServlet(name = "DeleteVehicle", urlPatterns = "/deleteVehicle")
-public class DeleteVehicle extends HttpServlet {
+@WebServlet(name = "VehicleShow", urlPatterns = "/showAllVehicles")
+public class VehicleShow extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        int id = Integer.parseInt(request.getParameter("id"));
-        try{
-            Vehicle vehicle = VehicleDao.loadById(id);
-            VehicleDao.delete(vehicle);
-            response.sendRedirect("/showAllVehicles");
-//            request.getRequestDispatcher("/showVehicles.jsp").forward(request, response);
-        } catch (Exception e){
-            e.printStackTrace();
+        List<pl.coderslab.model.Vehicle> vehicleList = VehicleDao.loadAll();
+        if(vehicleList != null & !vehicleList.isEmpty()) {
+            request.setAttribute("vehicleList", vehicleList);
+            request.getRequestDispatcher("/showVehicles.jsp").forward(request, response);
+        } else {
+            response.getWriter().append("THERE ARE NO VEHICLES");
         }
     }
 }
