@@ -74,9 +74,9 @@ public class CreateDatabase extends HttpServlet {
                         "FOREIGN KEY (vehicle_id) REFERENCES Vehicle(vehicle_id))";
 
         try {
-            DbService.executeUpdate(query1,null);
+            /*DbService.executeUpdate(query1,null);
             DbService.executeUpdate(query2,null);
-            DbService.executeUpdate(query3,null);
+            DbService.executeUpdate(query3,null);*/
             DbService.executeUpdate(query4,null);
             DbService.executeUpdate(query5,null);
         } catch (SQLException e) {
