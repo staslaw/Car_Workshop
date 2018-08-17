@@ -40,20 +40,20 @@ public class Raport1 extends HttpServlet {
             int hours = 0;
             for (int j = 0; j < orderList.size(); j++) {
                 if (id == orderList.get(j).getEmployee().getId()) {
-                    hours += orderList.get(j).getManHours();
+                    if (!(orderList.get(j).getManHours() == null)) {
+                        hours += orderList.get(j).getManHours();
+                    }
                 }
             }
             roboczogodziny.put(key, hours);
         }
         if (from == null || to == null) {
-        }
-        else if (("".equals(from) || "".equals(to))) {
+        } else if (("".equals(from) || "".equals(to))) {
             news = "nie podałeś daty";
             request.setAttribute("news", news);
             request.setAttribute("from", from);
             request.setAttribute("to", to);
-        }
-        else {
+        } else {
             LocalDate dateFrom = LocalDate.parse(from);
             LocalDate dateTo = LocalDate.parse(to);
             request.setAttribute("from", from);
@@ -71,10 +71,14 @@ public class Raport1 extends HttpServlet {
                     roboczogodziny.put(key, 0);
                     int hours = 0;
                     for (int j = 0; j < orderList.size(); j++) {
-                        int checkId =  orderList.get(j).getEmployee().getId();
-                        LocalDate checkDate = LocalDate.parse(orderList.get(j).getServiceStart());
-                        if ((id == checkId) && (!checkDate.isAfter(dateTo)) && (!checkDate.isBefore(dateFrom))) {
-                            hours += orderList.get(j).getManHours();
+                        int checkId = orderList.get(j).getEmployee().getId();
+                        String check = orderList.get(j).getServiceStart();
+                        if (check == null || "".equals(check)) {
+                        } else {
+                            LocalDate checkDate = LocalDate.parse(check);
+                            if ((id == checkId) && (!checkDate.isAfter(dateTo)) && (!checkDate.isBefore(dateFrom))) {
+                                hours += orderList.get(j).getManHours();
+                            }
                         }
                     }
                     roboczogodziny.put(key, hours);
