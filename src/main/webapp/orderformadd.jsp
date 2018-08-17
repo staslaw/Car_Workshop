@@ -56,11 +56,11 @@
 </p>
 <form action='' method='post'>
     Data przyjęcia do naprawy:
-    <input type='date' name='serviceAccept' value='${order.serviceAccept}' ><br>
+    <input type='date' name='serviceAccept' value='${order.serviceAccept}' required><br>
     Planowana data rozpoczęcia naprawy:
     <input type='date' name='servicePlan' value='${order.servicePlan}' ><br>
     Pojazd:
-    <select name='vehicle' id="vehicle">
+    <select name='vehicle' id="vehicle" required>
         <option value="">Wybierz samochód:</option>
         <c:forEach items="${vehicles}" var="vehicle">
             <option <c:if test="${vehicle.id == order.vehicle.id}">selected</c:if> value="${vehicle.id}">
@@ -69,7 +69,7 @@
         </c:forEach>
     </select><br>
     Właściciel pojazdu:
-    <input type='text' id='vehicleOwner' readonly  value='${vehicle.client.firstName} ${vehicle.client.lastName}'><br>
+    <input type='text' id='vehicleOwner' readonly  value='${order.vehicle.client.firstName} ${order.vehicle.client.lastName}'><br>
     Pracownik:
     <select name='employee' id="employee" class="costs-counting">
         <c:forEach items="${employees}" var="employee">
@@ -79,7 +79,7 @@
         </c:forEach>
     </select><br>
     Opis problemu:
-    <input type='text' name='issueDesc' value='${order.issueDesc}'><br>
+    <input type='text' name='issueDesc' value='${order.issueDesc}' required><br>
     <input type='submit' value='zapisz'>
 </form>
 <jsp:include page="WEB-INF/fragments/footer.jsp"/>

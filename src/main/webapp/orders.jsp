@@ -60,6 +60,7 @@
                                 $('#ajax-info').html("");
                             } else {
                                 $('#ajax-info').html("Nie ma takiego powiązania");
+                                $('#orders-list').html("");
                             }
 
                         },
