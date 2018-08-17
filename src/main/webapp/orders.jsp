@@ -11,6 +11,59 @@
 <html>
 <head>
     <title>Naprawy</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+
+            var ordersList = $('#orders-list').html();
+
+            $('#employees').on("change",function() {
+                if($(this).find(':selected').val()) {
+
+                    $.ajax({
+                        url : '/GetOrders',
+                        data : {
+                            employeeId : $(this).find(':selected').val()
+                        },
+                        dataType : "json",
+                        statusCode: {
+                            500: function() {
+                                $('#ajax-info').html("Brak w bazie danych pracownika o podanym id");
+                            }
+                        },
+                        success : function(result) {
+                            var od = result ;
+                            var employeeOrders = "";
+                            $.each(od,function (key,value) {
+                                employeeOrders += "<tr>";
+                                employeeOrders += "<td>" + value.id +"</td>";
+                                employeeOrders += "<td>" + value.serviceAccept +"</td>";
+                                employeeOrders += "<td>" + value.vehicle.client.firstName + " " + value.vehicle.client.lastName + "</td>";
+                                employeeOrders += "<td>" + value.vehicle.model + " " + value.vehicle.make + "</td>";
+                                employeeOrders += "<td>" + value.employee.firstName + " " + value.employee.lastName + "</td>";
+                                employeeOrders += "<td>" + value.status.name + "</td>";
+                                var repairCost = (value.repairCost > 0) ? value.repairCost.toFixed(2) : "";
+                                repairCost = repairCost.replace(".",",")
+                                employeeOrders += "<td>" + repairCost + "</td>";
+                                employeeOrders += "<td><a href='/order/details?id=" + value.id + "'>szczegóły</a></td>";
+                                employeeOrders += "<td><a href='/order/update?id=" + value.id + "'>edytuj</a></td>";
+                                employeeOrders += "<td><a href='#'>usuń</a></td>";
+                                employeeOrders += "</tr>";
+                            });
+                            $('#orders-list').html(employeeOrders);
+
+                        },
+                        error: function(data){
+                            $('#ajax-info').html("Błąd połączenia do bazy danych");
+                        }
+                    });
+                } else {
+                    $('#orders-list').html(ordersList);
+                }
+            });
+
+        });
+    </script>
 </head>
 <body>
 <jsp:include page="WEB-INF/fragments/header.jsp"/>
@@ -19,8 +72,17 @@
     <c:if test="${!empty chosedEmployee}"> pracownika: ${chosedEmployee.firstName} ${chosedEmployee.lastName}</c:if>
     <c:if test="${!empty chosedVehicle}"> dotycząca pojazdu: ${chosedVehicle.model} ${chosedVehicle.make} ${chosedVehicle.registration}</c:if>
 </h2>
+Pracownik:
+<select name='employee' id="employees">
+    <option value="" >Wybierz pracownika</option>
+    <c:forEach items="${employeesList}" var="employee">
+        <option value="${employee.id}">${employee.firstName} ${employee.lastName}</option>
+    </c:forEach>
+</select><br>
+<p id="ajax-info" style="color:red"></p>
 <p>Dodaj nowe zlecenie <a href="/order/add">Dodaj</a></p>
 <table border="1">
+    <thead>
     <tr>
         <th>id</th>
         <th>Data przyjęcia do naprawy</th>
@@ -33,6 +95,8 @@
         <th>Edycja</th>
         <th>Usuwanie</th>
     </tr>
+    </thead>
+    <tbody id="orders-list">
     <c:forEach var="order" items="${orderList}">
         <tr>
             <td>${order.id}</td>
@@ -51,6 +115,7 @@
             <td><a href="#">usuń</a></td>
         </tr>
     </c:forEach>
+    </tbody>
 </table>
 <jsp:include page="WEB-INF/fragments/footer.jsp"/>
 </body>

@@ -19,7 +19,7 @@
                     $.ajax({
                         url : '/GetVehicle',
                         data : {
-                            vehicleId : $('#vehicle').val()
+                            vehicleId : $(this).find(':selected').val()
                         },
                         dataType : "json",
                         statusCode: {
