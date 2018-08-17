@@ -32,35 +32,36 @@
                             vehicleId : $(this).data('vehicle-id')
                         },
                         dataType : "json",
-                        statusCode: {
-                            500: function() {
-                                $('#ajax-info').html("Brak w bazie danych pracownika o podanym id");
-                            }
-                        },
                         success : function(result) {
-                            var od = result ;
-                            var employeeOrders = "";
-                            $.each(od,function (key,value) {
-                                employeeOrders += "<tr>";
-                                employeeOrders += "<td>" + value.id +"</td>";
-                                employeeOrders += "<td>" + value.serviceAccept +"</td>";
-                                employeeOrders += "<td>" + value.vehicle.client.firstName + " " + value.vehicle.client.lastName + "</td>";
-                                employeeOrders += "<td>" + value.vehicle.model + " " + value.vehicle.make + "</td>";
-                                employeeOrders += "<td>" + value.employee.firstName + " " + value.employee.lastName + "</td>";
-                                employeeOrders += "<td>" + value.status.name + "</td>";
-                                var repairCost = (value.repairCost > 0) ? value.repairCost.toFixed(2) : "";
-                                repairCost = repairCost.replace(".",",")
-                                employeeOrders += "<td>" + repairCost + "</td>";
-                                employeeOrders += "<td><a href='/order/details?id=" + value.id + "'>szczegóły</a></td>";
-                                employeeOrders += "<td><a href='/order/update?id=" + value.id + "'>edytuj</a></td>";
-                                employeeOrders += "<td><a href='#'>usuń</a></td>";
-                                employeeOrders += "</tr>";
 
-                            });
-                            $('#orders-list').html(employeeOrders);
-                            var newHeader = header + " pracownika: " + od[0].employee.firstName + " " + od[0].employee.lastName;
-                            $('h2').html(newHeader);
+                            if(result.length>0) {
+                                var od = result ;
+                                console.log(result);
+                                var employeeOrders = "";
+                                $.each(od,function (key,value) {
+                                    employeeOrders += "<tr>";
+                                    employeeOrders += "<td>" + value.id +"</td>";
+                                    employeeOrders += "<td>" + value.serviceAccept +"</td>";
+                                    employeeOrders += "<td>" + value.vehicle.client.firstName + " " + value.vehicle.client.lastName + "</td>";
+                                    employeeOrders += "<td>" + value.vehicle.model + " " + value.vehicle.make + "</td>";
+                                    employeeOrders += "<td>" + value.employee.firstName + " " + value.employee.lastName + "</td>";
+                                    employeeOrders += "<td>" + value.status.name + "</td>";
+                                    var repairCost = (value.repairCost > 0) ? value.repairCost.toFixed(2) : "";
+                                    repairCost = repairCost.replace(".",",")
+                                    employeeOrders += "<td>" + repairCost + "</td>";
+                                    employeeOrders += "<td><a href='/order/details?id=" + value.id + "'>szczegóły</a></td>";
+                                    employeeOrders += "<td><a href='/order/update?id=" + value.id + "'>edytuj</a></td>";
+                                    employeeOrders += "<td><a href='#'>usuń</a></td>";
+                                    employeeOrders += "</tr>";
 
+                                });
+                                $('#orders-list').html(employeeOrders);
+                                var newHeader = header + " pracownika: " + od[0].employee.firstName + " " + od[0].employee.lastName;
+                                $('h2').html(newHeader);
+                                $('#ajax-info').html("");
+                            } else {
+                                $('#ajax-info').html("Nie ma takiego powiązania");
+                            }
 
                         },
                         error: function(data){
@@ -70,6 +71,7 @@
                 } else {
                     $('#orders-list').html(ordersList);
                     $('h2').html(header);
+                    $('#ajax-info').html("");
                 }
             });
 
