@@ -63,8 +63,45 @@ public class OrderUpdate extends HttpServlet {
             boolean manHoursValidated = true;
             boolean totalCostValidated = true;
 
+            String todayDate = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
+
+            if(compareDate(serviceAccept,serviceStart) == 1 || (!serviceStart.isEmpty() && compareDate(serviceStart,todayDate) == -100)) {
+                serviceStartValid = false;
+                formInfo.add("Nieprawidłowa data rozpoczęcia naprawy: data nie może być wcześniejsza niż data przyjęcia zlecenia.");
+
+            } else if (serviceStart.isEmpty()) {
+                order.setServiceStart(null);
+
+            } else {
+                order.setServiceStart(serviceStart);
+            }
+
             Double partsCost;
             int manHours;
+
+            // blokuje mozliwosc wpisania roboczogodzin jesli nie została ustalona data rozpoczęcia naprawy.
+
+            if(serviceStartValid && compareDate(serviceStart,todayDate) != -100) {
+
+                if(manHoursParam == null || (!isNumber(manHoursParam) && !manHoursParam.isEmpty())){
+                    manHoursValidated = false;
+                    manHours = 0;
+                    order.setManHours(manHours);
+                    formInfo.add("Podana ilość roboczogodzin nie jest liczbą.");
+
+                } else if(manHoursParam != null && isNumber(manHoursParam) && !manHoursParam.isEmpty()) {
+                    manHours = Integer.valueOf(manHoursParam);
+                    order.setManHours(manHours);
+                } else if(manHoursParam.isEmpty()) {
+                    manHours = 0;
+                    order.setManHours(manHours);
+                }
+
+            } else {
+                manHours = 0;
+                order.setManHours(manHours);
+                formInfo.add("Nie można dodać ilości roboczogodzin pracownika, dopóki nie zostanie podana data rozpoczęcia naprawy");
+            }
 
 
             if(partsCostParam == null || (!isNumber(partsCostParam) && !partsCostParam.isEmpty())) {
@@ -79,32 +116,6 @@ public class OrderUpdate extends HttpServlet {
                 order.setPartsCost(partsCost);
             }
 
-            if(manHoursParam == null || (!isNumber(manHoursParam) && !manHoursParam.isEmpty())){
-                manHoursValidated = false;
-                manHours = 0;
-                order.setManHours(manHours);
-                formInfo.add("Podana ilość roboczogodzin nie jest liczbą.");
-
-            } else if(manHoursParam != null && isNumber(manHoursParam) && !manHoursParam.isEmpty()) {
-                manHours = Integer.valueOf(manHoursParam);
-                order.setManHours(manHours);
-            } else if(manHoursParam.isEmpty()) {
-                manHours = 0;
-                order.setManHours(manHours);
-            }
-
-            String todayDate = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
-
-            if(compareDate(serviceAccept,serviceStart) == 1 || (!serviceStart.isEmpty() && compareDate(serviceStart,todayDate) == -100)) {
-                serviceStartValid = false;
-                formInfo.add("Nieprawidłowa data rozpoczęcia naprawy: data nie może być wcześniejsza niż data przyjęcia zlecenia.");
-
-            } else if (serviceStart.isEmpty()) {
-                order.setServiceStart(null);
-
-            } else {
-                order.setServiceStart(serviceStart);
-            }
 
             if(!partsCostValidated || !manHoursValidated || !serviceStartValid) {
                 editOrdersValid = false;
