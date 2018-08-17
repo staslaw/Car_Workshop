@@ -28,7 +28,8 @@
                     $.ajax({
                         url : '/GetOrders',
                         data : {
-                            employeeId : $(this).find(':selected').val()
+                            employeeId : $(this).find(':selected').val(),
+                            vehicleId : $(this).data('vehicle-id')
                         },
                         dataType : "json",
                         statusCode: {
@@ -83,7 +84,7 @@
     <c:if test="${!empty chosedVehicle}"> dotycząca pojazdu: ${chosedVehicle.model} ${chosedVehicle.make} ${chosedVehicle.registration}</c:if>
 </h2>
 Pracownik:
-<select name='employee' id="employees">
+<select name='employee' id="employees" data-vehicle-id="${chosedVehicle.id}">
     <option value="" >Wybierz pracownika</option>
     <c:forEach items="${employeesList}" var="employee">
         <option value="${employee.id}">${employee.firstName} ${employee.lastName}</option>

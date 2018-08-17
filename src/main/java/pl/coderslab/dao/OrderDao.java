@@ -126,6 +126,14 @@ public class OrderDao {
         return getOrdersFromQuery(query, params);
     }
 
+    public static List<Order> loadAllByEmployeeIdAndVehicleId(int employeeId, int vehicleId){
+        String query = "SELECT * FROM Orders WHERE employee_id = ? AND vehicle_id = ? ORDER BY service_accept DESC";
+        List<String> params = new ArrayList<>();
+        params.add(String.valueOf(employeeId));
+        params.add(String.valueOf(vehicleId));
+        return getOrdersFromQuery(query, params);
+    }
+
 
     private static List<Order> getOrdersFromQuery(String query, List<String> params){
         List<Order> orders = new ArrayList<>();

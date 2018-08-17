@@ -27,7 +27,6 @@ public class Order extends HttpServlet {
         List<Employee> employeesList = EmployeeDao.loadAll();
         request.setAttribute("employeesList", employeesList);
 
-
         if("/orders".equalsIgnoreCase(servletPath)) {
             List<pl.coderslab.model.Order> orderList = OrderDao.loadAll();
             request.setAttribute("orderList", orderList);
