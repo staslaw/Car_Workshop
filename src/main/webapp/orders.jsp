@@ -36,7 +36,6 @@
 
                             if(result.length>0) {
                                 var od = result ;
-                                console.log(result);
                                 var employeeOrders = "";
                                 $.each(od,function (key,value) {
                                     employeeOrders += "<tr>";

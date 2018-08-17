@@ -48,7 +48,6 @@
         var costsCounting = $("#order-editing").find(".costs-counting");
 
         costsCounting.on("change",function() {
-            console.log("edytuje koszty");
             var hourlyRate = Number($("#employee").find(':selected').data('hourly-rate'));
             var partsCost = Number($("#parts-cost").val());
             var manHours = Number($("#man-hours").val());
