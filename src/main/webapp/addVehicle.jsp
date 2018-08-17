@@ -17,9 +17,14 @@
     <input type="text" name="registration" required><br>
     Next inspection date:
     <input type="date" name="nextService" required><br>
-    Client id:
-    <input type="number" min="1" name="clientId" required><br>
-    <br>
+    Client:
+    <%--<input type="number" min="1" name="clientId" required><br>--%>
+    <select name='clientId' id="client" required>
+        <option value="" ></option>
+        <c:forEach items="${clientList}" var="client">
+            <option value="${client.id}">${client.firstName} ${client.lastName}</option>
+        </c:forEach>
+    </select><br>
     <input type="submit" value="Save">
 </form>
 <jsp:include page="WEB-INF/fragments/footer.jsp"/>

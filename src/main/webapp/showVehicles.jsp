@@ -8,7 +8,6 @@
 <body>
 <jsp:include page="WEB-INF/fragments/header.jsp"/>
 <h2>Lista pojazdów:</h2>
-
     <form action="/showAllVehicles" method="post">
         <fieldset>Klient: <input type="text" name="find" >
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><a href="/addVehicle">Add Vehicle</a></b>
