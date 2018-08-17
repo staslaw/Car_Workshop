@@ -13,11 +13,17 @@
 </head>
 <body>
 <jsp:include page="WEB-INF/fragments/header.jsp"/>
-<h2>Lista pracowników:</h2>
-<form action="/Employee" method="post">
-    <fieldset>Wyszukaj pracownika po nazwisku: <input type="text" name="find">
+<form action="" method="post">
+    <fieldset>
+        <legend>
+            Wyszukiwanie pracownika po nazwisku:
+        </legend>
+        <input type="text" name="find" required>
+        <input type="submit" value="Szukaj">
     </fieldset>
 </form>
+<p style="color:red">${findInfo}</p>
+<h2>Lista pracowników<c:if test="${!empty chosedEmployee}"> [szukaj: '${chosedEmployee}']</c:if></h2>
 
 <table border="1">
     <tr>

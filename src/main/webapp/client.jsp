@@ -24,7 +24,7 @@
     </fieldset>
 </form>
 <p style="color:red">${findInfo}</p>
-<h2>Lista klientów<c:if test="${!empty chosedClient}"> [szukaj: ${chosedClient}]</c:if></h2>
+<h2>Lista klientów<c:if test="${!empty chosedClient}"> [szukaj: '${chosedClient}']</c:if></h2>
 <table border="1">
     <tr>
         <th>id</th>

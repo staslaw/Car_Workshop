@@ -16,20 +16,43 @@ import java.util.List;
 @WebServlet(name = "Employee", urlPatterns = "/Employee")
 public class Employee extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
         String find = request.getParameter("find");
-        List<pl.coderslab.model.Employee> employeeAll = EmployeeDao.loadAll();
-        List<pl.coderslab.model.Employee> employeeList = new ArrayList<>();
-        for (int i = 0; i < employeeAll.size(); i++) {
-            if (find.equals(employeeAll.get(i).getLastName())) {
-                employeeList.add(employeeAll.get(i));
+
+        if(find != null && !find.isEmpty()) {
+
+            find = find.trim();
+            find = find.toLowerCase();
+
+            List<pl.coderslab.model.Employee> employeeAll = EmployeeDao.loadAll();
+            List<pl.coderslab.model.Employee> employeeList = new ArrayList<>();
+            for (int i = 0; i < employeeAll.size(); i++) {
+                String lastName = employeeAll.get(i).getLastName();
+                lastName = lastName.trim();
+                lastName = lastName.toLowerCase();
+                if (lastName.contains(find)) {
+                    employeeList.add(employeeAll.get(i));
+                }
             }
-        }
-        if (employeeList.isEmpty()) {
-            getServletContext().getRequestDispatcher("/Employee").forward(request, response);
+
+            if (!employeeList.isEmpty()) {
+                request.setAttribute("employeeList", employeeList);
+                request.setAttribute("chosedEmployee", find);
+                getServletContext().getRequestDispatcher("/employee.jsp").forward(request, response);
+            } else {
+                String findInfo = "Brak pracownika o podanym nazwisku";
+                request.setAttribute("findInfo",findInfo);
+                getServletContext().getRequestDispatcher("/employee.jsp").forward(request, response);
+
+            }
+
         } else {
-            request.setAttribute("employeeList", employeeList);
+            String findInfo = "Nie wpisałeś nazwiska";
+            request.setAttribute("findInfo",findInfo);
             getServletContext().getRequestDispatcher("/employee.jsp").forward(request, response);
+
         }
+
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
