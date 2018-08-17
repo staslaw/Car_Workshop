@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 @WebServlet(name = "VehicleUpdate", urlPatterns = "/updateVehicle")
 public class VehicleUpdate extends HttpServlet {
@@ -38,7 +39,9 @@ public class VehicleUpdate extends HttpServlet {
         int id = Integer.parseInt(request.getParameter("id"));
         try {
             Vehicle vehicle = VehicleDao.loadById(id);
+            List<Client> clientList = ClientDao.loadAll();
             request.setAttribute("vehicle", vehicle);
+            request.setAttribute("clientList", clientList);
             getServletContext().getRequestDispatcher("/updateVehicle.jsp").forward(request, response);
         }catch (Exception e){
             e.printStackTrace();

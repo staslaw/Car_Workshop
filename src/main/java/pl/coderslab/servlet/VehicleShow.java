@@ -2,14 +2,12 @@ package pl.coderslab.servlet;
 
 import pl.coderslab.dao.ClientDao;
 import pl.coderslab.dao.VehicleDao;
-import pl.coderslab.model.Vehicle;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,13 +16,14 @@ import java.util.List;
 public class VehicleShow extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String find = request.getParameter("find").toLowerCase();
+        int length = find.length();
         if(find != null && !find.isEmpty()) {
             List<pl.coderslab.model.Client> clientAll = ClientDao.loadAll();
             List<pl.coderslab.model.Client> clientList = new ArrayList<>();
             for (int i = 0; i < clientAll.size(); i++) {
                 String lastName = clientAll.get(i).getLastName().toLowerCase();
-                int length = find.length();
-                if (lastName.equals(find) || lastName.substring(0,length).equals(find)) {
+                String sub = lastName.substring(0,length);
+                if (lastName.equals(find)) {
                     clientList.add(clientAll.get(i));
                 }
             }
