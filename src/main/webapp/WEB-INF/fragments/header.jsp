@@ -12,6 +12,7 @@
     <a href="/Employee">Employee</a>
     <a href="/Client">Clients</a>
     <a href="/showAllVehicles">Vehicles</a>
+    <a href="/Raport1">Raport1</a>
 
     <p>----------------------------------------------------------------------</p>
 </header>
