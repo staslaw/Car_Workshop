@@ -14,20 +14,43 @@ import java.util.List;
 @WebServlet(name = "Client", urlPatterns = "/Client")
 public class Client extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
         String find = request.getParameter("find");
-        List<pl.coderslab.model.Client> clientAll = ClientDao.loadAll();
-        List<pl.coderslab.model.Client> clientList = new ArrayList<>();
-        for (int i = 0; i < clientAll.size(); i++) {
-            if (find.equals(clientAll.get(i).getLastName())) {
-                clientList.add(clientAll.get(i));
+
+        if(find != null && !find.isEmpty()) {
+
+            find = find.trim();
+            find = find.toLowerCase();
+
+            List<pl.coderslab.model.Client> clientAll = ClientDao.loadAll();
+            List<pl.coderslab.model.Client> clientList = new ArrayList<>();
+            for (int i = 0; i < clientAll.size(); i++) {
+                String lastName = clientAll.get(i).getLastName();
+                lastName = lastName.trim();
+                lastName = lastName.toLowerCase();
+                if (lastName.contains(find)) {
+                    clientList.add(clientAll.get(i));
+                }
             }
-        }
-        if (clientList.isEmpty()) {
-            getServletContext().getRequestDispatcher("/Client").forward(request, response);
+
+            if (!clientList.isEmpty()) {
+                request.setAttribute("clientList", clientList);
+                request.setAttribute("chosedClient", find);
+                getServletContext().getRequestDispatcher("/client.jsp").forward(request, response);
+            } else {
+                String findInfo = "Brak klienta o podanym nazwisku";
+                request.setAttribute("findInfo",findInfo);
+                getServletContext().getRequestDispatcher("/client.jsp").forward(request, response);
+
+            }
+
         } else {
-            request.setAttribute("clientList", clientList);
+            String findInfo = "Nie wpisałeś nazwiska";
+            request.setAttribute("findInfo",findInfo);
             getServletContext().getRequestDispatcher("/client.jsp").forward(request, response);
+
         }
+
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

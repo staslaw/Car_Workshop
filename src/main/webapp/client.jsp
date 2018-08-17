@@ -14,13 +14,17 @@
 </head>
 <body>
 <jsp:include page="WEB-INF/fragments/header.jsp"/>
-<h2>Lista klientów:</h2>
-<form action="/Client" method="post">
-    <fieldset>Wyszukaj klienta po nazwisku: <input type="text" name="find">
+<form action="" method="post">
+    <fieldset>
+        <legend>
+            Wyszukiwanie klienta po nazwisku:
+        </legend>
+         <input type="text" name="find" required>
+        <input type="submit" value="Szukaj">
     </fieldset>
 </form>
-
-<h2>Lista klientów:<c:if test="${!empty chosedClient}"> ${chosedClient.lastName}</c:if></h2>
+<p style="color:red">${findInfo}</p>
+<h2>Lista klientów<c:if test="${!empty chosedClient}"> [szukaj: ${chosedClient}]</c:if></h2>
 <table border="1">
     <tr>
         <th>id</th>
