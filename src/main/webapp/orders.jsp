@@ -16,6 +16,11 @@
         $(document).ready(function() {
 
             var ordersList = $('#orders-list').html();
+            var header = $('h2').html();
+            var n = header.lastIndexOf('pracownika');
+            if(n >= 0) {
+                header = header.substring(0,n)
+            }
 
             $('#employees').on("change",function() {
                 if($(this).find(':selected').val()) {
@@ -49,8 +54,12 @@
                                 employeeOrders += "<td><a href='/order/update?id=" + value.id + "'>edytuj</a></td>";
                                 employeeOrders += "<td><a href='#'>usuń</a></td>";
                                 employeeOrders += "</tr>";
+
                             });
                             $('#orders-list').html(employeeOrders);
+                            var newHeader = header + " pracownika: " + od[0].employee.firstName + " " + od[0].employee.lastName;
+                            $('h2').html(newHeader);
+
 
                         },
                         error: function(data){
@@ -59,6 +68,7 @@
                     });
                 } else {
                     $('#orders-list').html(ordersList);
+                    $('h2').html(header);
                 }
             });
 

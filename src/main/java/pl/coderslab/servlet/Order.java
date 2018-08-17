@@ -24,11 +24,12 @@ public class Order extends HttpServlet {
 
         String servletPath = request.getServletPath();
 
+        List<Employee> employeesList = EmployeeDao.loadAll();
+        request.setAttribute("employeesList", employeesList);
+
 
         if("/orders".equalsIgnoreCase(servletPath)) {
             List<pl.coderslab.model.Order> orderList = OrderDao.loadAll();
-            List<Employee> employeesList = EmployeeDao.loadAll();
-            request.setAttribute("employeesList", employeesList);
             request.setAttribute("orderList", orderList);
             getServletContext().getRequestDispatcher("/orders.jsp").forward(request, response);
         }
