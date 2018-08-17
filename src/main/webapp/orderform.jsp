@@ -86,7 +86,7 @@
     Właściciel pojazdu:
     <input type='text' id='vehicleOwner' readonly  value='${order.vehicle.client.firstName} ${order.vehicle.client.lastName}'><br>
     Data przyjęcia do naprawy:
-    <input type='date' name='serviceAccept' value='${order.serviceAccept}' required><br>
+    <input type='date' name='serviceAccept' value='${order.serviceAccept}' ><br>
     Planowana data rozpoczęcia naprawy:
     <input type='date' name='servicePlan' value='${order.servicePlan}'><br>
     Data rozpoczęcia naprawy:
@@ -100,7 +100,7 @@
         </c:forEach>
     </select><br>
     Opis problemu:
-    <input type='text' name='issueDesc' value='${order.issueDesc}' required><br>
+    <input type='text' name='issueDesc' value='${order.issueDesc}'><br>
     Opis naprawy:
     <input type='text' name='repairDesc' value='${order.repairDesc}'><br>
     Koszty wykorzystanych części:
