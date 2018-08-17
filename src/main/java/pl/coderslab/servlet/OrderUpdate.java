@@ -17,7 +17,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 @WebServlet(name = "OrderUpdate", urlPatterns = {"/order/update","/order/add"})
@@ -142,39 +145,86 @@ public class OrderUpdate extends HttpServlet {
                 if(validated){
                     order.setRepairCost(totalCostDouble);
                 } else {
-                    backtoFormWithInfo(request, response, order, formInfo);
+                    backtoFormWithInfo(request, response, order, formInfo,"/orderform.jsp");
                 }
 
+            }
+
+            if("/order/add".equalsIgnoreCase(servletPath)) {
+                List<Vehicle> vehicles = VehicleDao.loadAll();
+                List<Employee> employees = EmployeeDao.loadAll();
+                request.setAttribute("serviceAccept",serviceAccept);
+                request.setAttribute("servicePlan",servicePlan);
+
+                String todayDate = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
+                List<String> formInfo = new ArrayList<>();
+                boolean validated = true;
+                boolean serviceAcceptValidated = true;
+                boolean servicePlanValidated = true;
+                boolean employeeValidated = true;
+                boolean vehicleValidated = true;
+
+                if(serviceAccept == null || compareDate(serviceAccept,todayDate) == -1 || compareDate(serviceAccept,todayDate) == null) {
+                    serviceAcceptValidated = false;
+                    formInfo.add("Nieprawidłowa data przyjęcia zlecenia: data nie może być przeszła");
+
+                }
+
+                if(employeeIdParam == null || employeeIdParam.isEmpty() || EmployeeDao.loadById(Integer.parseInt(employeeIdParam)) == null) {
+                    employeeValidated = false;
+                    formInfo.add("Nieprawidłowe id Pracownika");
+
+                }
+
+                if(vehicleIdParam == null || vehicleIdParam.isEmpty()) {
+                    vehicleValidated = false;
+                    formInfo.add("Nieprawidłowe id Pojazdu");
+
+                }
+
+                if(compareDate(serviceAccept,servicePlan) == 1 || (servicePlan != null && compareDate(servicePlan,todayDate) == null)) {
+                    servicePlanValidated = false;
+                    formInfo.add("Nieprawidłowa planowana data rozpoczęcia naprawy: data nie może być wcześniejsza niż data przyjęcia zlecenia");
+                }
+
+                if(!serviceAcceptValidated || !servicePlanValidated || !employeeValidated || !vehicleValidated) {
+                    validated = false;
+                }
+
+                if(validated){
+                    order.setServiceAccept(serviceAccept);
+                    order.setServicePlan(servicePlan);
+                    order.setEmployee(EmployeeDao.loadById(Integer.valueOf(employeeIdParam)));
+                    order.setVehicle(VehicleDao.loadById(Integer.valueOf(vehicleIdParam)));
+                    order.setIssueDesc(issueDesc);
+
+                } else {
+                    backtoFormWithInfo(request, response, order, formInfo,"/orderformadd.jsp");
+                }
+
+//            if(!employeeIdParam.isEmpty()) {
+//                int employeeId = Integer.valueOf(employeeIdParam);
+//                Employee chosedEmployee = EmployeeDao.loadById(employeeId);
+//                request.setAttribute("chosedEmployee",chosedEmployee);
+//            }
+//
+//            if(!vehicleIdParam.isEmpty()) {
+//                int vehicleId = Integer.valueOf(vehicleIdParam);
+//                Vehicle chosedVehicle = VehicleDao.loadById(vehicleId);
+//                request.setAttribute("chosedVehicle",chosedVehicle);
+//            }
+//
+//            request.setAttribute("formInfo",formInfo);
+//            request.setAttribute("issueDesc",issueDesc);
+//            request.setAttribute("vehicles", vehicles);
+//            request.setAttribute("employees", employees);
+//
+//            getServletContext().getRequestDispatcher("/orderformadd.jsp").forward(request, response);
             }
 
             OrderDao.save(order);
             response.sendRedirect("/orders");
 
-        } else if("/order/add".equalsIgnoreCase(servletPath)) {
-            List<Vehicle> vehicles = VehicleDao.loadAll();
-            List<Employee> employees = EmployeeDao.loadAll();
-            String formInfo = "Wypełnij wszystkie pola";
-            request.setAttribute("serviceAccept",serviceAccept);
-            request.setAttribute("servicePlan",servicePlan);
-
-            if(!employeeIdParam.isEmpty()) {
-                int employeeId = Integer.valueOf(employeeIdParam);
-                Employee chosedEmployee = EmployeeDao.loadById(employeeId);
-                request.setAttribute("chosedEmployee",chosedEmployee);
-            }
-
-            if(!vehicleIdParam.isEmpty()) {
-                int vehicleId = Integer.valueOf(vehicleIdParam);
-                Vehicle chosedVehicle = VehicleDao.loadById(vehicleId);
-                request.setAttribute("chosedVehicle",chosedVehicle);
-            }
-
-            request.setAttribute("formInfo",formInfo);
-            request.setAttribute("issueDesc",issueDesc);
-            request.setAttribute("vehicles", vehicles);
-            request.setAttribute("employees", employees);
-
-            getServletContext().getRequestDispatcher("/orderformadd.jsp").forward(request, response);
         }
 
 
@@ -212,7 +262,7 @@ public class OrderUpdate extends HttpServlet {
         }
     }
 
-    private void backtoFormWithInfo(HttpServletRequest request, HttpServletResponse response, Order order, List<String> formInfo) throws ServletException, IOException {
+    private void backtoFormWithInfo(HttpServletRequest request, HttpServletResponse response, Order order, List<String> formInfo, String path) throws ServletException, IOException {
         List<Vehicle> vehicles = VehicleDao.loadAll();
         List<Employee> employees = EmployeeDao.loadAll();
         List<Status> statuses = StatusDao.loadAll();
@@ -222,6 +272,27 @@ public class OrderUpdate extends HttpServlet {
         request.setAttribute("employees", employees);
         request.setAttribute("order",order);
         request.setAttribute("statuses", statuses);
-        getServletContext().getRequestDispatcher("/orderform.jsp").forward(request, response);
+        getServletContext().getRequestDispatcher(path).forward(request, response);
+    }
+
+    private Integer compareDate(String date1, String date2) {
+        Date enteredDate1;
+        Date enteredDate2;
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            enteredDate1 = sdf.parse(date1);
+            enteredDate2 = sdf.parse(date2);
+        }catch (Exception ex) {
+            return null;
+        }
+
+        if(enteredDate1.after(enteredDate2)){
+            return 1;
+        }else if (enteredDate1.equals(enteredDate2)) {
+            return 0;
+        } else {
+            return -1;
+        }
+
     }
 }
