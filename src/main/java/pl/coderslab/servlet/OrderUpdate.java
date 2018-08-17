@@ -61,6 +61,7 @@ public class OrderUpdate extends HttpServlet {
             boolean serviceStartValid = true;
             boolean partsCostValidated = true;
             boolean manHoursValidated = true;
+            boolean totalCostValidated = true;
 
             Double partsCost;
             int manHours;
@@ -109,8 +110,8 @@ public class OrderUpdate extends HttpServlet {
                 editOrdersValid = false;
             }
 
-            if(formInfo.size() == 0 && editOrdersValid) {
-                
+            if(editOrdersValid) {
+
                 BigDecimal hourlyRateBG = new BigDecimal(String.valueOf(order.getHourlyRate()));
                 BigDecimal manHoursBG = new BigDecimal(String.valueOf(order.getManHours()));
                 BigDecimal partsCostBG = new BigDecimal(String.valueOf(order.getPartsCost()));
@@ -124,12 +125,16 @@ public class OrderUpdate extends HttpServlet {
                     formInfo.add("Chyba trochę przesadziłeś z kosztami?");
                     order.setPartsCost(orderBack.getRepairCost());
                     order.setManHours(orderBack.getManHours());
-                    backtoFormWithInfo(request, response, order, formInfo, "/orderform.jsp");
+                    totalCostValidated= false;
                 } else {
                     order.setRepairCost(totalCostDouble);
-                    OrderDao.save(order);
-                    response.sendRedirect("/orders");
+
                 }
+            }
+
+            if(formInfo.size() == 0 && editOrdersValid && totalCostValidated) {
+                OrderDao.save(order);
+                response.sendRedirect("/orders");
             } else {
                 backtoFormWithInfo(request, response, order, formInfo, "/orderform.jsp");
             }
@@ -168,7 +173,7 @@ public class OrderUpdate extends HttpServlet {
 
             if(serviceAccept == null || serviceAccept.isEmpty() || compareDate(serviceAccept,todayDate) == -100) {
                 serviceAcceptValidated = false;
-                formInfo.add("Nieprawidłowa data przyjęcia zlecenia: data musi być podana i nie może być przeszła.");
+                formInfo.add("Nieprawidłowa data przyjęcia zlecenia: data musi być podana.");
             } else {
                 order.setServiceAccept(serviceAccept);
             }
