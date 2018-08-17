@@ -25,7 +25,21 @@ public class GetOrders extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
 
         String employeeIdParam = request.getParameter("employeeId").trim();
-        if(employeeIdParam != null){
+        String vehicleIdParam = request.getParameter("vehicleId").trim();
+
+
+        if(!employeeIdParam.isEmpty() && !vehicleIdParam.isEmpty()){
+
+            int employeeId = Integer.parseInt(employeeIdParam);
+            int vehicleId = Integer.valueOf(vehicleIdParam);
+
+            List<Order> employeeOrdersOnVehicle = OrderDao.loadAllByEmployeeIdAndVehicleId(employeeId, vehicleId);
+            if(employeeOrdersOnVehicle!= null) {
+                response.setContentType("application/json");
+                new Gson().toJson(employeeOrdersOnVehicle, response.getWriter());
+            }
+
+        } else if(!employeeIdParam.isEmpty()) {
             int employeeId = Integer.parseInt(employeeIdParam);
             List<Order> employeeOrders = OrderDao.loadAllByEmployeeId(employeeId);
             if(employeeOrders!= null) {
