@@ -7,11 +7,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
-    <title>Pracownicy</title>
-</head>
-<body>
+
 <jsp:include page="WEB-INF/fragments/header.jsp"/>
 <form action="" method="post">
     <fieldset>
@@ -56,5 +52,3 @@
 <a href="/employeeAdd.jsp">dodaj</a>
 
 <jsp:include page="WEB-INF/fragments/footer.jsp"/>
-</body>
-</html>

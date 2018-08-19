@@ -64,6 +64,11 @@ public class OrderDao {
 
     }
 
+    public static List<Order> loadLastLimit(int quantity){
+        String query = "SELECT * FROM Orders ORDER BY service_accept DESC LIMIT " + quantity;
+        return getOrdersFromQuery(query,null);
+    }
+
     public static Order loadById(int id){
         String query = "SELECT * FROM Orders WHERE order_id = ?";
         try{
@@ -110,6 +115,13 @@ public class OrderDao {
             e.printStackTrace();
         }
         return  null;
+    }
+
+    public static List<Order> loadAllByStatusId(int id){
+        String query = "SELECT * FROM Orders WHERE status_id = ? ORDER BY service_accept DESC";
+        List<String> params = new ArrayList<>();
+        params.add(String.valueOf(id));
+        return getOrdersFromQuery(query, params);
     }
 
     public static List<Order> loadAllByVehicleId(int id){
