@@ -7,12 +7,6 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
-    <title>Klienci</title>
-    <meta charset="utf-8">
-</head>
-<body>
 <jsp:include page="WEB-INF/fragments/header.jsp"/>
 <form action="" method="post">
     <fieldset>
@@ -53,5 +47,3 @@
 </table>
 <a href="/clientAdd.jsp">dodaj</a>
 <jsp:include page="WEB-INF/fragments/footer.jsp"/>
-</body>
-</html>

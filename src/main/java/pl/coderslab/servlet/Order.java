@@ -6,11 +6,13 @@ import pl.coderslab.dao.VehicleDao;
 import pl.coderslab.model.Employee;
 import pl.coderslab.model.Vehicle;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
@@ -24,8 +26,15 @@ public class Order extends HttpServlet {
 
         String servletPath = request.getServletPath();
 
-        List<Employee> employeesList = EmployeeDao.loadAll();
-        request.setAttribute("employeesList", employeesList);
+        List<Employee> employees = EmployeeDao.loadAll();
+        List<Vehicle> vehicles = VehicleDao.loadAll();
+
+        request.setAttribute("vehicles", vehicles);
+        request.setAttribute("employees", employees);
+
+
+        HttpSession httpSession = request.getSession();
+        httpSession.setAttribute("servletPath", servletPath);
 
         if("/orders".equalsIgnoreCase(servletPath)) {
             List<pl.coderslab.model.Order> orderList = OrderDao.loadAll();

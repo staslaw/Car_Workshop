@@ -1,11 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<html>
-<head>
-    <title>Pojazdy</title>
-</head>
-<body>
 <jsp:include page="WEB-INF/fragments/header.jsp"/>
 <h2>Lista pojazdów:</h2>
     <form action="/showAllVehicles" method="post">
@@ -43,5 +38,3 @@
     </c:forEach>
 </table>
 <jsp:include page="WEB-INF/fragments/footer.jsp"/>
-</body>
-</html>

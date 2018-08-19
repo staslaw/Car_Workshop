@@ -11,59 +11,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
-    <title>Title</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script>
-    $(document).ready(function() {
-        $('#vehicle').on("change",function() {
-            $.ajax({
-                url : '/GetVehicle',
-                data : {
-                    vehicleId : $('#vehicle').val()
-                },
-                dataType : "json",
-                statusCode: {
-                    500: function() {
-                        $('#vehicleOwner').val("Brak");
-                    }
-                },
-                success : function(result) {
-                    var od = result ;
-                    var odString = JSON.stringify(result) ;
-                    console.log(odString);
-                    $('#vehicleOwner').val(od.client.firstName + " " + od.client.lastName);
-                },
-                error: function(data){
-                    $('#vehicleOwner').val("Brak połączenia z bazą danych");
-                }
-            });
-        });
 
-        $('#employee').on("change",function() {
-            $('#hourly-rate').val($(this).find(':selected').data('hourly-rate'));
-        });
-
-        var costsCounting = $("#order-editing").find(".costs-counting");
-
-        costsCounting.on("change",function() {
-            var hourlyRate = Number($("#employee").find(':selected').data('hourly-rate'));
-            var partsCost = Number($("#parts-cost").val());
-            var manHours = Number($("#man-hours").val());
-
-            var result = (hourlyRate * manHours) + partsCost;
-
-            result = (Math.round(result*100)/100).toFixed(2);
-
-            $("#total-cost").val(result);
-
-        });
-    });
-
-    </script>
-</head>
-<body>
 <jsp:include page="WEB-INF/fragments/header.jsp"/>
 <p>
     <ul style="color:red">
@@ -123,5 +71,3 @@
     <input type='submit' value='zapisz'>
 </form>
 <jsp:include page="WEB-INF/fragments/footer.jsp"/>
-</body>
-</html>

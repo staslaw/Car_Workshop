@@ -8,11 +8,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
-    <title>Title</title>
-</head>
-<body>
+
 <jsp:include page="WEB-INF/fragments/header.jsp"/>
 <h2>Szczegóły zlecenia:</h2>
 <table border="1">
@@ -82,5 +78,3 @@
     </tr>
 </table>
 <jsp:include page="WEB-INF/fragments/footer.jsp"/>
-</body>
-</html>

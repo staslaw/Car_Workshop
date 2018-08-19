@@ -7,45 +7,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
-    <title>Title</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('#vehicle').on("change",function() {
-                if($(this).find(':selected').val()) {
 
-                    $.ajax({
-                        url : '/GetVehicle',
-                        data : {
-                            vehicleId : $(this).find(':selected').val()
-                        },
-                        dataType : "json",
-                        statusCode: {
-                            500: function() {
-                                $('#vehicleOwner').val("Brak pojazdu o podanym id");
-                            }
-                        },
-                        success : function(result) {
-                            var od = result ;
-                            var odString = JSON.stringify(result) ;
-                            console.log(odString);
-                            $('#vehicleOwner').val(od.client.firstName + " " + od.client.lastName);
-                        },
-                        error: function(data){
-                            $('#vehicleOwner').val("Brak połączenia z bazą danych");
-                        }
-                    });
-                } else {
-                    $('#vehicleOwner').val("");
-                }
-            });
-        });
-
-    </script>
-</head>
-<body>
 <jsp:include page="WEB-INF/fragments/header.jsp"/>
 <p>
 <ul style="color:red">
@@ -83,5 +45,3 @@
     <input type='submit' value='zapisz'>
 </form>
 <jsp:include page="WEB-INF/fragments/footer.jsp"/>
-</body>
-</html>

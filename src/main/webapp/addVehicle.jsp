@@ -1,10 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
-    <title>Title</title>
-</head>
-<body>
+
 <jsp:include page="WEB-INF/fragments/header.jsp"/>
 <form action="" method="post">
     Make:
@@ -28,5 +24,3 @@
     <input type="submit" value="Save">
 </form>
 <jsp:include page="WEB-INF/fragments/footer.jsp"/>
-</body>
-</html>

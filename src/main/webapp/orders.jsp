@@ -8,78 +8,9 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
-    <title>Naprawy</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script>
-        $(document).ready(function() {
 
-            var ordersList = $('#orders-list').html();
-            var header = $('h2').html();
-            var n = header.lastIndexOf('pracownika');
-            if(n >= 0) {
-                header = header.substring(0,n)
-            }
-
-            $('#employees').on("change",function() {
-                if($(this).find(':selected').val()) {
-
-                    $.ajax({
-                        url : '/GetOrders',
-                        data : {
-                            employeeId : $(this).find(':selected').val(),
-                            vehicleId : $(this).data('vehicle-id')
-                        },
-                        dataType : "json",
-                        success : function(result) {
-
-                            if(result.length>0) {
-                                var od = result ;
-                                var employeeOrders = "";
-                                $.each(od,function (key,value) {
-                                    employeeOrders += "<tr>";
-                                    employeeOrders += "<td>" + value.id +"</td>";
-                                    employeeOrders += "<td>" + value.serviceAccept +"</td>";
-                                    employeeOrders += "<td>" + value.vehicle.client.firstName + " " + value.vehicle.client.lastName + "</td>";
-                                    employeeOrders += "<td>" + value.vehicle.model + " " + value.vehicle.make + "</td>";
-                                    employeeOrders += "<td>" + value.employee.firstName + " " + value.employee.lastName + "</td>";
-                                    employeeOrders += "<td>" + value.status.name + "</td>";
-                                    var repairCost = (value.repairCost > 0) ? value.repairCost.toFixed(2) : "";
-                                    repairCost = repairCost.replace(".",",")
-                                    employeeOrders += "<td>" + repairCost + "</td>";
-                                    employeeOrders += "<td><a href='/order/details?id=" + value.id + "'>szczegóły</a></td>";
-                                    employeeOrders += "<td><a href='/order/update?id=" + value.id + "'>edytuj</a></td>";
-                                    employeeOrders += "<td><a href='#'>usuń</a></td>";
-                                    employeeOrders += "</tr>";
-
-                                });
-                                $('#orders-list').html(employeeOrders);
-                                var newHeader = header + " pracownika: " + od[0].employee.firstName + " " + od[0].employee.lastName;
-                                $('h2').html(newHeader);
-                                $('#ajax-info').html("");
-                            } else {
-                                $('#ajax-info').html("Nie ma takiego powiązania");
-                                $('#orders-list').html("");
-                            }
-
-                        },
-                        error: function(data){
-                            $('#ajax-info').html("Błąd połączenia do bazy danych");
-                        }
-                    });
-                } else {
-                    $('#orders-list').html(ordersList);
-                    $('h2').html(header);
-                    $('#ajax-info').html("");
-                }
-            });
-
-        });
-    </script>
-</head>
-<body>
 <jsp:include page="WEB-INF/fragments/header.jsp"/>
+<jsp:include page="WEB-INF/fragments/addelements.jsp"/>
 <h2>
     Lista zleceń
     <c:if test="${!empty chosedEmployee}"> pracownika: ${chosedEmployee.firstName} ${chosedEmployee.lastName}</c:if>
@@ -131,5 +62,3 @@ Pracownik:
     </tbody>
 </table>
 <jsp:include page="WEB-INF/fragments/footer.jsp"/>
-</body>
-</html>

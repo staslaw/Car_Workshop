@@ -1,27 +1,25 @@
 package pl.coderslab.servlet;
 
-import pl.coderslab.dao.EmployeeDao;
-import pl.coderslab.dao.OrderDao;
-import pl.coderslab.dao.StatusDao;
-import pl.coderslab.dao.VehicleDao;
+import pl.coderslab.dao.*;
+import pl.coderslab.model.Client;
 import pl.coderslab.model.Employee;
 import pl.coderslab.model.Order;
 import pl.coderslab.model.Status;
 import pl.coderslab.model.Vehicle;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @WebServlet(name = "OrderUpdate", urlPatterns = {"/order/update","/order/add"})
 public class OrderUpdate extends HttpServlet {
@@ -153,16 +151,39 @@ public class OrderUpdate extends HttpServlet {
 
         if("/order/add".equalsIgnoreCase(servletPath)) {
 
+            HttpSession httpSession = request.getSession();
+
+            String previousServletPath = (String) httpSession.getAttribute("servletPath");
+
+            if(previousServletPath == null) {
+                previousServletPath="/orders";
+            }
+
+            previousServletPath = previousServletPath.trim();
+
             Order order = new Order();
 
             List<String> formInfo = isValid(vehicleIdParam, serviceAccept, servicePlan, employeeIdParam, issueDesc, order, "add");
 
-            if(formInfo.size()==0){
+            if (formInfo.size()==0) {
                 order.setStatus(StatusDao.loadById(statusId));
                 OrderDao.save(order);
                 response.sendRedirect("/orders");
             } else {
-                backtoFormWithInfo(request, response, order, formInfo,"/orderformadd.jsp");
+
+                if("/orders".equals(previousServletPath)) {
+                    System.out.println("**********************");
+                    System.out.println(previousServletPath);
+
+                    backtoFormWithInfo(request, response, order, formInfo,"/orders.jsp");
+
+                } else {
+                    System.out.println("**********************");
+                    System.out.println(previousServletPath);
+                    backtoFormWithInfo(request, response, order, formInfo,"/index.jsp");
+
+
+                }
             }
         }
     }
@@ -276,12 +297,31 @@ public class OrderUpdate extends HttpServlet {
         List<Vehicle> vehicles = VehicleDao.loadAll();
         List<Employee> employees = EmployeeDao.loadAll();
         List<Status> statuses = StatusDao.loadAll();
+        List<Order> orders = OrderDao.loadAll();
+        List<Client> clients = ClientDao.loadAll();
+        List<Order> ordersLast5 = OrderDao.loadLastLimit(5);
 
         request.setAttribute("formInfo",formInfo);
         request.setAttribute("vehicles", vehicles);
         request.setAttribute("employees", employees);
+        request.setAttribute("ordersLast5", ordersLast5);
         request.setAttribute("order",order);
         request.setAttribute("statuses", statuses);
+
+        int ordersSize = orders.size();
+        int clientsSize = clients.size();
+        int employeesSize = employees.size();
+        int vehiclesSize = vehicles.size();
+
+        Map<String, Integer> stats = new HashMap<>();
+
+        stats.put("ordersSize",ordersSize);
+        stats.put("clientsSize",clientsSize);
+        stats.put("employeesSize",employeesSize);
+        stats.put("vehiclesSize",vehiclesSize);
+
+        request.setAttribute("stats",stats);
+
         getServletContext().getRequestDispatcher(path).forward(request, response);
     }
 
