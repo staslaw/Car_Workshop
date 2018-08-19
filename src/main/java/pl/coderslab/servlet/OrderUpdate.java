@@ -21,6 +21,8 @@ import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import static pl.coderslab.servlet.Order.getValuesForOrdersView;
+
 @WebServlet(name = "OrderUpdate", urlPatterns = {"/order/update","/order/add"})
 public class OrderUpdate extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -47,127 +49,168 @@ public class OrderUpdate extends HttpServlet {
 
         if("/order/update".equalsIgnoreCase(servletPath)) {
 
-            int orderId = Integer.valueOf(orderIdParam);
-
-            Order order = OrderDao.loadById(orderId);
-            order.setRepairDesc(repairDesc);
-            order.setStatus(StatusDao.loadById(Integer.valueOf(statusIdParam)));
-
-            List<String> formInfo = isValid(vehicleIdParam, serviceAccept, servicePlan, employeeIdParam, issueDesc, order,"update");
-
-            boolean editOrdersValid = true;
-            boolean serviceStartValid = true;
-            boolean partsCostValidated = true;
-            boolean manHoursValidated = true;
-            boolean totalCostValidated = true;
-
-            String todayDate = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
-
-            if(compareDate(serviceAccept,serviceStart) == 1 || (!serviceStart.isEmpty() && compareDate(serviceStart,todayDate) == -100)) {
-                serviceStartValid = false;
-                formInfo.add("Nieprawidłowa data rozpoczęcia naprawy: data nie może być wcześniejsza niż data przyjęcia zlecenia.");
-
-            } else if (serviceStart.isEmpty()) {
-                order.setServiceStart(null);
-
+            if(orderIdParam == null || !isNumber(orderIdParam) || "0".equals(orderIdParam)) {
+                List<String> formInfoEditing = new ArrayList<>();
+                formInfoEditing.add("Brak klienta o podanym id");
+                Order order = new Order();
+                backtoFormWithInfo(request, response, order, order, null, formInfoEditing,"/WEB-INF/fragments/editor.jsp");
             } else {
-                order.setServiceStart(serviceStart);
-            }
 
-            Double partsCost;
-            int manHours;
+                int orderId = Integer.valueOf(orderIdParam);
 
-            // blokuje mozliwosc wpisania roboczogodzin jesli nie została ustalona data rozpoczęcia naprawy.
+                Order orderEditing = OrderDao.loadById(orderId);
+                orderEditing.setRepairDesc(repairDesc);
+                orderEditing.setStatus(StatusDao.loadById(Integer.valueOf(statusIdParam)));
 
-            if(serviceStartValid && compareDate(serviceStart,todayDate) != -100) {
+                List<String> formInfoEditing = isValid(vehicleIdParam, serviceAccept, servicePlan, employeeIdParam, issueDesc, orderEditing,"update");
 
-                if(manHoursParam == null || (!isNumber(manHoursParam) && !manHoursParam.isEmpty())){
-                    manHoursValidated = false;
-                    manHours = 0;
-                    order.setManHours(manHours);
-                    formInfo.add("Podana ilość roboczogodzin nie jest liczbą.");
+                boolean editOrdersValid = true;
+                boolean serviceStartValid = true;
+                boolean partsCostValidated = true;
+                boolean manHoursValidated = true;
+                boolean totalCostValidated = true;
 
-                } else if(manHoursParam != null && isNumber(manHoursParam) && !manHoursParam.isEmpty()) {
-                    manHours = Integer.valueOf(manHoursParam);
-                    order.setManHours(manHours);
-                } else if(manHoursParam.isEmpty()) {
-                    manHours = 0;
-                    order.setManHours(manHours);
-                }
+                String todayDate = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
 
-            } else {
-                manHours = 0;
-                order.setManHours(manHours);
-                formInfo.add("Nie można dodać ilości roboczogodzin pracownika, dopóki nie zostanie podana data rozpoczęcia naprawy");
-            }
+                if(compareDate(serviceAccept,serviceStart) == 1 || (!serviceStart.isEmpty() && compareDate(serviceStart,todayDate) == -100)) {
+                    serviceStartValid = false;
+                    formInfoEditing.add("Nieprawidłowa data rozpoczęcia naprawy: data nie może być wcześniejsza niż data przyjęcia zlecenia.");
 
+                } else if (serviceStart.isEmpty()) {
+                    orderEditing.setServiceStart(null);
 
-            if(partsCostParam == null || (!isNumber(partsCostParam) && !partsCostParam.isEmpty())) {
-                partsCostValidated = false;
-                formInfo.add("Podane koszty wykorzystanych części nie są liczbą.");
-
-            } else if (partsCostParam != null && isNumber(partsCostParam) && !partsCostParam.isEmpty()) {
-                partsCost = Double.parseDouble(partsCostParam);
-                order.setPartsCost(partsCost);
-            } else if (partsCostParam.isEmpty()) {
-                partsCost = 0.0;
-                order.setPartsCost(partsCost);
-            }
-
-
-            if(!partsCostValidated || !manHoursValidated || !serviceStartValid) {
-                editOrdersValid = false;
-            }
-
-            if(editOrdersValid) {
-
-                BigDecimal hourlyRateBG = new BigDecimal(String.valueOf(order.getHourlyRate()));
-                BigDecimal manHoursBG = new BigDecimal(String.valueOf(order.getManHours()));
-                BigDecimal partsCostBG = new BigDecimal(String.valueOf(order.getPartsCost()));
-                BigDecimal totalcost = hourlyRateBG.multiply(manHoursBG).add(partsCostBG);
-                totalcost = totalcost.setScale(2, RoundingMode.CEILING);
-
-                Double totalCostDouble = totalcost.doubleValue();
-
-                if (totalCostDouble > 99999.99) {
-                    Order orderBack = OrderDao.loadById(orderId);
-                    formInfo.add("Chyba trochę przesadziłeś z kosztami?");
-                    order.setPartsCost(orderBack.getRepairCost());
-                    order.setManHours(orderBack.getManHours());
-                    totalCostValidated= false;
                 } else {
-                    order.setRepairCost(totalCostDouble);
-
+                    orderEditing.setServiceStart(serviceStart);
                 }
+
+                Double partsCost;
+                Integer manHours;
+
+                // blokuje mozliwosc wpisania roboczogodzin jesli nie została ustalona data rozpoczęcia naprawy.
+
+                if(serviceStartValid && compareDate(serviceStart,todayDate) != -100) {
+
+                    if(manHoursParam == null || (!isNumber(manHoursParam) && !manHoursParam.isEmpty())){
+                        manHoursValidated = false;
+                        manHours = 0;
+                        orderEditing.setManHours(manHours);
+                        formInfoEditing.add("Podana ilość roboczogodzin nie jest liczbą.");
+
+                    } else if(manHoursParam != null && isNumber(manHoursParam) && !manHoursParam.isEmpty()) {
+                        manHours = Integer.valueOf(manHoursParam);
+                        orderEditing.setManHours(manHours);
+                    } else if(manHoursParam.isEmpty()) {
+                        manHours = 0;
+                        orderEditing.setManHours(manHours);
+                    }
+
+                } else if(!manHoursParam.isEmpty() && !"0".equals(manHoursParam)) {
+
+                    manHours = 0;
+                    orderEditing.setManHours(manHours);
+                    manHoursValidated = false;
+                    formInfoEditing.add("Nie można dodać ilości roboczogodzin pracownika, dopóki nie zostanie podana data rozpoczęcia naprawy");
+
+
+                } else {
+                    manHours = 0;
+                    orderEditing.setManHours(manHours);
+                }
+
+
+                if(partsCostParam == null || (!isNumber(partsCostParam) && !partsCostParam.isEmpty())) {
+                    partsCostValidated = false;
+                    formInfoEditing.add("Podane koszty wykorzystanych części nie są liczbą.");
+
+                } else if (partsCostParam != null && isNumber(partsCostParam) && !partsCostParam.isEmpty()) {
+                    partsCost = Double.parseDouble(partsCostParam);
+                    orderEditing.setPartsCost(partsCost);
+                } else if (partsCostParam.isEmpty()) {
+                    partsCost = 0.0;
+                    orderEditing.setPartsCost(partsCost);
+                }
+
+
+                if(!partsCostValidated || !manHoursValidated || !serviceStartValid) {
+                    editOrdersValid = false;
+                }
+
+                if(editOrdersValid) {
+
+                    BigDecimal hourlyRateBG = new BigDecimal(String.valueOf(orderEditing.getHourlyRate()));
+                    BigDecimal manHoursBG = new BigDecimal(String.valueOf(orderEditing.getManHours()));
+                    BigDecimal partsCostBG = new BigDecimal(String.valueOf(orderEditing.getPartsCost()));
+                    BigDecimal totalcost = hourlyRateBG.multiply(manHoursBG).add(partsCostBG);
+                    totalcost = totalcost.setScale(2, RoundingMode.CEILING);
+
+                    Double totalCostDouble = totalcost.doubleValue();
+
+                    if (totalCostDouble > 99999.99) {
+                        Order orderBack = OrderDao.loadById(orderId);
+                        formInfoEditing.add("Chyba trochę przesadziłeś z kosztami?");
+                        orderEditing.setPartsCost(orderBack.getRepairCost());
+                        orderEditing.setManHours(orderBack.getManHours());
+                        totalCostValidated= false;
+                    } else {
+                        orderEditing.setRepairCost(totalCostDouble);
+
+                    }
+                }
+
+                if(formInfoEditing.size() == 0 && editOrdersValid && totalCostValidated) {
+                    OrderDao.save(orderEditing);
+                    response.sendRedirect("/orders");
+                } else {
+                    request.setAttribute("servletPath",servletPath);
+                    backtoFormWithInfo(request, response, null, orderEditing, null, formInfoEditing,"/WEB-INF/fragments/editor.jsp");
+                }
+
             }
 
-            if(formInfo.size() == 0 && editOrdersValid && totalCostValidated) {
-                OrderDao.save(order);
-                response.sendRedirect("/orders");
-            } else {
-                backtoFormWithInfo(request, response, order, formInfo, "/orderform.jsp");
-            }
+
         }
 
         if("/order/add".equalsIgnoreCase(servletPath)) {
 
             HttpSession httpSession = request.getSession();
 
+            String orderIdEditingParam = request.getParameter("orderIdEditing");
+
+            int orderIdEditing = 0;
+
+            Order orderEditing = new Order();
+
+            if(orderIdEditingParam != null && isNumber(orderIdEditingParam)) {
+                orderIdEditing = Integer.valueOf(orderIdEditingParam);
+                orderEditing = OrderDao.loadById(orderIdEditing);
+            }
+
+            httpSession.setAttribute("orderEditingSession",orderEditing);
+
             String previousServletPath = (String) httpSession.getAttribute("servletPath");
 
             if(previousServletPath == null) {
                 previousServletPath="/orders";
+            } else {
+                previousServletPath = previousServletPath.trim();
+                int n = previousServletPath.indexOf("?");
+
+                if(n>0) {
+                    previousServletPath = previousServletPath.substring(0,n);
+                }
+
             }
 
-            previousServletPath = previousServletPath.trim();
+            request.setAttribute("previousServletPath",previousServletPath);
 
-            Order order = new Order();
 
-            List<String> formInfo = isValid(vehicleIdParam, serviceAccept, servicePlan, employeeIdParam, issueDesc, order, "add");
+            Order orderToAdd = new Order();
 
-            if (formInfo.size()==0) {
-                order.setStatus(StatusDao.loadById(statusId));
-                OrderDao.save(order);
+            List<String> formInfoAdding = isValid(vehicleIdParam, serviceAccept, servicePlan, employeeIdParam, issueDesc, orderToAdd, "add");
+
+            if (formInfoAdding.size()==0) {
+                orderToAdd.setStatus(StatusDao.loadById(statusId));
+                OrderDao.save(orderToAdd);
                 response.sendRedirect("/orders");
             } else {
 
@@ -175,12 +218,19 @@ public class OrderUpdate extends HttpServlet {
                     System.out.println("**********************");
                     System.out.println(previousServletPath);
 
-                    backtoFormWithInfo(request, response, order, formInfo,"/orders.jsp");
+                    backtoFormWithInfo(request, response, orderToAdd,orderEditing, formInfoAdding,null,"/orders.jsp");
+
+                } else if ("/order/update".equals(previousServletPath)) {
+                    System.out.println("**********************");
+                    System.out.println(previousServletPath);
+
+                    backtoFormWithInfo(request, response, orderToAdd,orderEditing, formInfoAdding,null,"/WEB-INF/fragments/editor.jsp");
+
 
                 } else {
                     System.out.println("**********************");
                     System.out.println(previousServletPath);
-                    backtoFormWithInfo(request, response, order, formInfo,"/index.jsp");
+                    backtoFormWithInfo(request, response, orderToAdd,orderEditing, formInfoAdding,null,"/index.jsp");
 
 
                 }
@@ -279,21 +329,35 @@ public class OrderUpdate extends HttpServlet {
 
             String idParam = request.getParameter("id");
 
-            int id = Integer.valueOf(idParam);
 
-            Order order = OrderDao.loadById(id);
+            // sesje są zapisywame, aby wiedzieć skąd pochodzi zapytanie i następnie odesłać w to samo miejsce
+            // chodzi o formularz dodający nowe zlecenie - ktory jest na stronie głównej, w zakładce naprawy i w zakładce edytuj naprawę.
+
+            HttpSession httpSession = request.getSession();
+            httpSession.setAttribute("servletPath", servletPath);
+
+            int id = 0;
+            Order orderEditing = new Order();
+
+            if(idParam != null && !idParam.isEmpty()) {
+                id = Integer.valueOf(idParam);
+                orderEditing = OrderDao.loadById(id);
+            }
+
+
 
             List<Status> statuses = StatusDao.loadAll();
 
-            request.setAttribute("order",order);
+            request.setAttribute("orderEditing",orderEditing);
             request.setAttribute("statuses", statuses);
+            request.setAttribute("servletPath",servletPath);
 
 
-            getServletContext().getRequestDispatcher("/orderform.jsp").forward(request, response);
+            getServletContext().getRequestDispatcher("/WEB-INF/fragments/editor.jsp").forward(request, response);
         }
     }
 
-    private void backtoFormWithInfo(HttpServletRequest request, HttpServletResponse response, Order order, List<String> formInfo, String path) throws ServletException, IOException {
+    private void backtoFormWithInfo(HttpServletRequest request, HttpServletResponse response, Order orderToAdd, Order orderEditing, List<String> formInfoAdding, List<String> formInfoEditing, String path) throws ServletException, IOException {
         List<Vehicle> vehicles = VehicleDao.loadAll();
         List<Employee> employees = EmployeeDao.loadAll();
         List<Status> statuses = StatusDao.loadAll();
@@ -301,11 +365,14 @@ public class OrderUpdate extends HttpServlet {
         List<Client> clients = ClientDao.loadAll();
         List<Order> ordersLast5 = OrderDao.loadLastLimit(5);
 
-        request.setAttribute("formInfo",formInfo);
+        request.setAttribute("formInfoAdding",formInfoAdding);
+        request.setAttribute("formInfoEditing",formInfoEditing);
         request.setAttribute("vehicles", vehicles);
         request.setAttribute("employees", employees);
         request.setAttribute("ordersLast5", ordersLast5);
-        request.setAttribute("order",order);
+        request.setAttribute("orders", orders);
+        request.setAttribute("orderToAdd",orderToAdd);
+        request.setAttribute("orderEditing",orderEditing);
         request.setAttribute("statuses", statuses);
 
         int ordersSize = orders.size();
@@ -313,7 +380,7 @@ public class OrderUpdate extends HttpServlet {
         int employeesSize = employees.size();
         int vehiclesSize = vehicles.size();
 
-        Map<String, Integer> stats = new HashMap<>();
+        Map<String, Integer> stats = getValuesForOrdersView(employees, orders);
 
         stats.put("ordersSize",ordersSize);
         stats.put("clientsSize",clientsSize);

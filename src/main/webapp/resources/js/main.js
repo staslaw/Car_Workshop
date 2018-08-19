@@ -1,26 +1,30 @@
 $(document).ready(function() {
     console.log("hello !")
 
-    $('#vehicle').on("change",function() {
+    var vehicleSelect = $('.vehicle-select');
+
+    vehicleSelect.on("change",function() {
+        var self = $(this);
         $.ajax({
             url : '/GetVehicle',
             data : {
-                vehicleId : $('#vehicle').val()
+                vehicleId : $(this).find(':selected').val()
             },
             dataType : "json",
             statusCode: {
                 500: function() {
-                    $('#vehicleOwner').val("");
+                    self.closest('.modal-body').find('.vehicle-owner').val("Coś nie tak");
                 }
             },
             success : function(result) {
                 var od = result ;
                 var odString = JSON.stringify(result) ;
                 console.log(odString);
-                $('#vehicleOwner').val(od.client.firstName + " " + od.client.lastName);
+                console.log(self);
+                self.closest('.modal-body').find('.vehicle-owner').val(od.client.firstName + " " + od.client.lastName);
             },
             error: function(data){
-                $('#vehicleOwner').val("Brak połączenia z bazą danych");
+                self.closest('.modal-body').find('.vehicle-owner').val("Brak połączenia z bazą danych");
             }
         });
     });
@@ -29,7 +33,7 @@ $(document).ready(function() {
         $('#hourly-rate').val($(this).find(':selected').data('hourly-rate'));
     });
 
-    var costsCounting = $("#order-editing").find(".costs-counting");
+    var costsCounting = $("form").find(".costs-counting");
 
     costsCounting.on("change",function() {
         var hourlyRate = Number($("#employee").find(':selected').data('hourly-rate'));
@@ -45,12 +49,12 @@ $(document).ready(function() {
     });
 
     var ordersList = $('#orders-list').html();
-    var header = $('h2').html();
-    if(header != null) {
-
-        var n = header.lastIndexOf('pracownika');
+    var header = $('.filtred-orders');
+    if(header.length !=0) {
+        var editedHeader = header.html();
+        var n = header.html().lastIndexOf('pracownika');
         if(n >= 0) {
-            header = header.substring(0,n)
+            editedHeader = header.substring(0,n)
         }
 
     }
@@ -79,7 +83,6 @@ $(document).ready(function() {
                         var employeeOrders = "";
                         $.each(od,function (key,value) {
                             employeeOrders += "<tr>";
-                            employeeOrders += "<td>" + value.id +"</td>";
                             employeeOrders += "<td>" + value.serviceAccept +"</td>";
                             employeeOrders += "<td>" + value.vehicle.client.firstName + " " + value.vehicle.client.lastName + "</td>";
                             employeeOrders += "<td>" + value.vehicle.model + " " + value.vehicle.make + "</td>";
@@ -88,19 +91,20 @@ $(document).ready(function() {
                             var repairCost = (value.repairCost > 0) ? value.repairCost.toFixed(2) : "";
                             repairCost = repairCost.replace(".",",")
                             employeeOrders += "<td>" + repairCost + "</td>";
-                            employeeOrders += "<td><a href='/order/details?id=" + value.id + "'>szczegóły</a></td>";
-                            employeeOrders += "<td><a href='/order/update?id=" + value.id + "'>edytuj</a></td>";
-                            employeeOrders += "<td><a href='#'>usuń</a></td>";
+                            employeeOrders += "<td><a class='btn btn-success' href='/order/details?id=" + value.id + "'>szczegóły</a></td>";
+                            employeeOrders += "<td><a class='btn btn-primary' href='/order/update?id=" + value.id + "'>edytuj</a></td>";
+                            employeeOrders += "<td><a class='btn btn-danger' href='#'>usuń</a></td>";
                             employeeOrders += "</tr>";
 
                         });
                         $('#orders-list').html(employeeOrders);
-                        var newHeader = header + " pracownika: " + od[0].employee.firstName + " " + od[0].employee.lastName;
-                        $('h2').html(newHeader);
+                        var newHeader = editedHeader + " pracownika: " + od[0].employee.firstName + " " + od[0].employee.lastName;
+                        header.html(newHeader);
                         $('#ajax-info').html("");
                     } else {
                         $('#ajax-info').html("Nie ma takiego powiązania");
                         $('#orders-list').html("");
+                        header.html(editedHeader);
                     }
 
                 },
@@ -110,16 +114,20 @@ $(document).ready(function() {
             });
         } else {
             $('#orders-list').html(ordersList);
-            $('h2').html(header);
+            header.html(editedHeader);
             $('#ajax-info').html("");
         }
     });
+
+    // zaznaczanie w menu obecnie otwartej zakładki
 
     var navbarMenu = $('.navbar');
     navbarMenu.find('li.active').removeClass('active');
     navbarMenu.find('a[href="' + location.pathname + '"]').closest('li').addClass('active');
 
-    var formValid = $('.formValid');
+    // po walidacji po stronie serwera formularza do edycji zlecen ponowne otwarcie formularza z dodanymi przez serwer komunikatami
+
+    var formValid = $('.formValid.editor-add');
     console.log(formValid);
     console.log(formValid.data('is-valid'));
 
@@ -136,36 +144,31 @@ $(document).ready(function() {
 
         elementToInvole.click();
 
-        // $('.add-elements').find('.list-group-item').click();
     }
 
+    // przycisk anuluj w formularzu czysci dane i komunikaty z serwera,
 
     $('button.btn.btn-default').on("click",function () {
 
-        if(formValid.data('is-valid') == '0') {
+        if(formValid.data('is-valid') !== undefined) {
 
             $('.modal.fade').one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function(e) {
-                window.location.href = '/';
+
+                if(formValid.data('location') !== "") {
+                    var url = formValid.data("location");
+                } else {
+                    var url = "/";
+                }
+
+                window.location.href = url;
                 return false;
+
+                // $(this).closest('form').find("input[type=text], input[type=date] textarea, select").val("");
+                //
+                // var toClear = $(this).closest('form').find('.modal-header').find('.formValid');
+                // toClear.attr("data-is-valid", "1")
+                // toClear.find("ul").empty();
             });
         }
-
-
-
-        // logoImgWrapper.one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function(e) {
-        //   setMarginOnContener();
-        // });
-
-
-
-
-            // $(this).closest('form').find("input[type=text], input[type=date] textarea, select").val("");
-            //
-            // var toClear = $(this).closest('form').find('.modal-header').find('.formValid');
-            // toClear.attr("data-is-valid", "1")
-            // toClear.find("ul").empty();
-
     })
-
-
 });

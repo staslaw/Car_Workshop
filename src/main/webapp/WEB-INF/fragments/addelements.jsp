@@ -11,7 +11,7 @@
     <a class="list-group-item active main-color-bg">
         <icon class="icon-cog"></icon> Dashboard
     </a>
-    <a type="button" data-toggle="modal" data-target="#addPage" class="list-group-item">
+    <a type="button" data-toggle="modal" data-target="#addClient" class="list-group-item">
         <i class="icon-plus"></i> Dodaj klienta<span class="badge"><i class="icon-user"></i></span>
     </a>
     <a type="button" data-toggle="modal" data-target="#addPage" class="list-group-item">

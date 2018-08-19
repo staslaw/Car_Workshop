@@ -53,7 +53,7 @@
                         <div class="col-md-3">
                             <div class="well dash-box">
                                 <h2><i class="icon-cab"></i> ${stats["ordersEndedCount"]}</h2>
-                                <h4>Gotowe do odbioru</h4>
+                                <h4>Pojazdy gotowe do odbioru</h4>
                             </div>
                         </div>
                     </div>
@@ -87,13 +87,13 @@
                         <table class="table table-striped table-hover">
                             <thead>
                             <tr>
-                                <th>Data przyjęcia</th>
+                                <th>Data przyjęcia do naprawy</th>
                                 <th>Klient</th>
                                 <th>Pojazd</th>
                                 <th>Pracownik</th>
                                 <th>Status</th>
-                                <th>Koszt</th>
-                                <th>Szczegóły</th>
+                                <th>Koszt całkowity</th>
+                                <th>Szczegóły Naprawy</th>
                                 <th>Edycja</th>
                                 <th>Usuwanie</th>
                             </tr>
@@ -111,9 +111,9 @@
                                             <c:set var = "repairCost" value ="${order.repairCost}"/><fmt:formatNumber value = "${repairCost}" type="number" groupingUsed = "false" minFractionDigits="2" maxFractionDigits="2" />
                                         </c:if>
                                     </td>
-                                    <td><a class="btn btn-success" href="/order/details?id=${order.id}">szczegóły</a></td>
-                                    <td><a class="btn btn-primary" href="/order/update?id=${order.id}">edytuj</a></td>
-                                    <td><a class="btn btn-danger" href="#">usuń</a></td>
+                                    <td><a href="/order/details?id=${order.id}">szczegóły</a></td>
+                                    <td><a href="/order/update?id=${order.id}">edytuj</a></td>
+                                    <td><a href="#">usuń</a></td>
                                 </tr>
                             </c:forEach>
                             </tbody>

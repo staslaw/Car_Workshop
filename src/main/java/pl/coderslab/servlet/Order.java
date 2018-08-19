@@ -14,7 +14,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @WebServlet(name = "Order", urlPatterns = {"/orders","/orders/employee","/orders/vehicle"})
 public class Order extends HttpServlet {
@@ -37,8 +39,13 @@ public class Order extends HttpServlet {
         httpSession.setAttribute("servletPath", servletPath);
 
         if("/orders".equalsIgnoreCase(servletPath)) {
-            List<pl.coderslab.model.Order> orderList = OrderDao.loadAll();
-            request.setAttribute("orderList", orderList);
+            List<pl.coderslab.model.Order> orders = OrderDao.loadAll();
+            request.setAttribute("orders", orders);
+
+            Map<String, Integer> stats = getValuesForOrdersView(employees, orders);
+
+            request.setAttribute("stats",stats);
+
             getServletContext().getRequestDispatcher("/orders.jsp").forward(request, response);
         }
 
@@ -75,6 +82,55 @@ public class Order extends HttpServlet {
             }
 
         }
+    }
 
+    public static Map<String, Integer> getValuesForOrdersView(List<Employee> employees, List<pl.coderslab.model.Order> orderList) {
+        int freeEmployees = 0;
+
+        boolean employeeFound = true;
+
+        for(Employee employee: employees) {
+            for(pl.coderslab.model.Order order: orderList) {
+                if(employee.getId() == order.getEmployee().getId()) {
+                    employeeFound = true;
+                    break;
+                } else {
+                    employeeFound = false;
+                }
+
+            }
+
+            if(employeeFound==false) {
+                freeEmployees++;
+            }
+        }
+
+        List<pl.coderslab.model.Order> ordersAwaited = OrderDao.loadAllByStatusId(1);
+        List<pl.coderslab.model.Order> ordersInRepair = OrderDao.loadAllByStatusId(3);
+        List<pl.coderslab.model.Order> ordersEnded = OrderDao.loadAllByStatusId(4);
+
+        int orderAwaitedCount = 0;
+        int orderInRepairCount = 0;
+        int ordersEndedCount = 0;
+
+        if(ordersAwaited != null) {
+            orderAwaitedCount = ordersAwaited.size();
+        }
+
+        if(ordersInRepair != null) {
+            orderInRepairCount = ordersInRepair.size();
+        }
+
+        if(ordersEnded != null) {
+            ordersEndedCount = ordersEnded.size();
+        }
+
+        Map<String, Integer> stats = new HashMap<>();
+
+        stats.put("orderAwaitedCount",orderAwaitedCount);
+        stats.put("orderInRepairCount",orderInRepairCount);
+        stats.put("ordersEndedCount",ordersEndedCount);
+        stats.put("freeEmployees",freeEmployees);
+        return stats;
     }
 }
