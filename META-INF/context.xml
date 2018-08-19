@@ -12,5 +12,4 @@
               maxIdle="30"
               maxWaitMillis="10000" />
     <resources mapping="/resources/**" location="/resources/" />
-    crossContext="true"
 </Context>
