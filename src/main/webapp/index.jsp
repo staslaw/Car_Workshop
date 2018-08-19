@@ -55,24 +55,28 @@
                     <div class="panel-body">
                         <div class="col-md-3">
                             <div class="well dash-box">
-                                <h2><i class="icon-wrench"></i> ${stats["ordersSize"]}</h2>
+                                <a class="absolute-full-link" href="/orders"></a>
+                                <h2><i class="icon-clipboard"></i> ${stats["ordersSize"]}</h2>
                                 <h4>Zlecenia</h4>
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="well dash-box">
+                                <a class="absolute-full-link" href="/Client"></a>
                                 <h2><i class="icon-user"></i> ${stats["clientsSize"]}</h2>
                                 <h4>Klienci</h4>
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="well dash-box">
+                                <a class="absolute-full-link" href="/Employee"></a>
                                 <h2><i class="icon-user-secret"></i> ${stats["employeesSize"]}</h2>
                                 <h4>Pracownicy</h4>
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="well dash-box">
+                                <a class="absolute-full-link" href="/showAllVehicles"></a>
                                 <h2><i class="icon-cab"></i> ${stats["vehiclesSize"]}</h2>
                                 <h4>Pojazdy</h4>
                             </div>

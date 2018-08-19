@@ -1,9 +1,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/fmt" prefix = "fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<c:if test="${param.orderEditing == null}">
+<c:if test="${orderEditing.id == 0}">
     <c:set var="orderEditing" value="${orderEditingSession}"/>
 </c:if>
+
 <%--
   Created by IntelliJ IDEA.
   User: kamil

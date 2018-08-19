@@ -6,6 +6,18 @@ body{
   min-height: 185px;
 }
 
+.col-md-3 {
+  position: relative;
+}
+
+.absolute-full-link {
+  position:absolute;
+  top:0;
+  bottom:0;
+  left:0;
+  right: 0;
+}
+
 ol, ul {
   margin-bottom: 0;
 }

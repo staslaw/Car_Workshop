@@ -166,26 +166,23 @@ public class OrderUpdate extends HttpServlet {
                 }
 
             }
-
-
         }
 
         if("/order/add".equalsIgnoreCase(servletPath)) {
 
             HttpSession httpSession = request.getSession();
 
-            String orderIdEditingParam = request.getParameter("orderIdEditing");
+            Order orderEditing;
 
-            int orderIdEditing = 0;
+            try {
 
-            Order orderEditing = new Order();
+                orderEditing = (Order) httpSession.getAttribute("orderEditingSession");
 
-            if(orderIdEditingParam != null && isNumber(orderIdEditingParam)) {
-                orderIdEditing = Integer.valueOf(orderIdEditingParam);
-                orderEditing = OrderDao.loadById(orderIdEditing);
+            } catch (Exception e) {
+
+                orderEditing = new Order();
             }
 
-            httpSession.setAttribute("orderEditingSession",orderEditing);
 
             String previousServletPath = (String) httpSession.getAttribute("servletPath");
 
@@ -215,23 +212,14 @@ public class OrderUpdate extends HttpServlet {
             } else {
 
                 if("/orders".equals(previousServletPath)) {
-                    System.out.println("**********************");
-                    System.out.println(previousServletPath);
-
-                    backtoFormWithInfo(request, response, orderToAdd,orderEditing, formInfoAdding,null,"/orders.jsp");
+                    backtoFormWithInfo(request, response, orderToAdd, orderEditing, formInfoAdding,null,"/orders.jsp");
 
                 } else if ("/order/update".equals(previousServletPath)) {
-                    System.out.println("**********************");
-                    System.out.println(previousServletPath);
-
-                    backtoFormWithInfo(request, response, orderToAdd,orderEditing, formInfoAdding,null,"/WEB-INF/fragments/editor.jsp");
+                    backtoFormWithInfo(request, response, orderToAdd, orderEditing, formInfoAdding,null,"/WEB-INF/fragments/editor.jsp");
 
 
                 } else {
-                    System.out.println("**********************");
-                    System.out.println(previousServletPath);
                     backtoFormWithInfo(request, response, orderToAdd,orderEditing, formInfoAdding,null,"/index.jsp");
-
 
                 }
             }
@@ -321,10 +309,6 @@ public class OrderUpdate extends HttpServlet {
         request.setAttribute("employees", employees);
 
 
-        if("/order/add".equalsIgnoreCase(servletPath)) {
-            getServletContext().getRequestDispatcher("/orderformadd.jsp").forward(request, response);
-        }
-
         if("/order/update".equalsIgnoreCase(servletPath)) {
 
             String idParam = request.getParameter("id");
@@ -339,11 +323,14 @@ public class OrderUpdate extends HttpServlet {
             int id = 0;
             Order orderEditing = new Order();
 
-            if(idParam != null && !idParam.isEmpty()) {
+            if(idParam != null && isNumber(idParam)) {
                 id = Integer.valueOf(idParam);
                 orderEditing = OrderDao.loadById(id);
             }
 
+            if(id!=0) {
+                httpSession.setAttribute("orderEditingSession",orderEditing);
+            }
 
 
             List<Status> statuses = StatusDao.loadAll();

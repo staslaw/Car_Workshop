@@ -64,8 +64,7 @@
             <label>Opis problemu:</label>
             <input type='text' class="form-control" name='issueDesc' value='${orderToAdd.issueDesc}' required>
         </div>
-        <div class="form-group">
-            <label>Opis problemu:</label>
+        <div class="form-group" style="display: none;">
             <input type='text' class="form-control" readonly name='orderIdEditing' value='${orderEditing.id}' required>
         </div>
     </div>
