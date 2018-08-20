@@ -108,7 +108,7 @@
                                         </c:if>
                                     </td>
                                     <td>${order.status.name}</td>
-                                    <td><a href="/order/details?id=${order.id}">szczegóły</a></td>
+                                    <td><a class="btn btn-success" href="/order/details?id=${order.id}">szczegóły</a></td>
                                 </tr>
                             </c:forEach>
                         </table>
