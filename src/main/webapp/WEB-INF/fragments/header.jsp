@@ -13,6 +13,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>${pageTitle}</title>
     <!-- Bootstrap core CSS -->
@@ -39,7 +40,8 @@
                 <li><a href="/Client">Klienci</a></li>
                 <li><a href="/Employee">Pracownicy</a></li>
                 <li><a href="/showAllVehicles">Pojazdy</a></li>
-                <li><a href="/Raport1">Raporty</a></li>
+                <li><a href="/Raport1">Raport1</a></li>
+                <li><a href="/Raport2">Raport2</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="#">Welcome, Brad</a></li>

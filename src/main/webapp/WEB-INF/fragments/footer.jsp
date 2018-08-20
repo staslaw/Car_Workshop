@@ -10,7 +10,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <footer id="footer">
-    <p>Copyright Kamil Kozlowski Grzegorz Krawczyński Stanisław, &copy; 2018</p>
+    <p>Copyright Kamil Kozlowski Grzegorz Krawczyński Stanisław Niemyski, &copy; 2018</p>
 </footer>
 
 <!-- Add Client -->
