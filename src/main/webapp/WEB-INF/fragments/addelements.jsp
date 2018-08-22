@@ -14,10 +14,10 @@
     <a type="button" data-toggle="modal" data-target="#addClient" class="list-group-item">
         <i class="icon-plus"></i> Dodaj klienta<span class="badge"><i class="icon-user"></i></span>
     </a>
-    <a type="button" data-toggle="modal" data-target="#addPage" class="list-group-item">
+    <a type="button" data-toggle="modal" data-target="#addEmployee" class="list-group-item">
         <i class="icon-plus"></i> Dodaj pracownika <span class="badge"><icon class="icon-user-secret"></icon></span>
     </a>
-    <a type="button" data-toggle="modal" data-target="#addPage" class="list-group-item">
+    <a type="button" data-toggle="modal" data-target="#addVehicle" class="list-group-item">
         <i class="icon-plus"></i> Dodaj pojazd <span class="badge"><icon class="icon-cab"></icon></span>
     </a>
     <a type="button" data-toggle="modal" data-target="#addOrder" class="list-group-item">

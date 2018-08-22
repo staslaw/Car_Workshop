@@ -33,9 +33,6 @@ public class VehicleAdd extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        List<Client> clientList = ClientDao.loadAll();
-        request.setAttribute("clientList", clientList);
-        getServletContext().getRequestDispatcher("/addVehicle.jsp").forward(request, response);
 
     }
 }

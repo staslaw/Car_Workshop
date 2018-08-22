@@ -58,7 +58,7 @@
                             ${employee.firstName} ${employee.lastName} (stawka: ${employee.hourly_rate} zł/h)
                     </option>
                 </c:forEach>
-            </select><br>
+            </select>
         </div>
         <div class="form-group">
             <label>Opis problemu:</label>

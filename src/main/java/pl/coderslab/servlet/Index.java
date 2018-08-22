@@ -42,6 +42,7 @@ public class Index extends HttpServlet {
 
         request.setAttribute("vehicles", vehicles);
         request.setAttribute("employees", employees);
+        request.setAttribute("clients",clients);
 
         List<Order> ordersLast5 = OrderDao.loadLastLimit(5);
 

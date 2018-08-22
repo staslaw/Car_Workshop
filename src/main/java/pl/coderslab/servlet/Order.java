@@ -73,9 +73,9 @@ public class Order extends HttpServlet {
                 response.sendRedirect("/showAllVehicles");
             } else {
                 int id = Integer.valueOf(idParam);
-                List<pl.coderslab.model.Order> orderList = OrderDao.loadAllByVehicleId(id);
+                List<pl.coderslab.model.Order> orders = OrderDao.loadAllByVehicleId(id);
                 Vehicle vehicle = VehicleDao.loadById(id);
-                request.setAttribute("orderList", orderList);
+                request.setAttribute("orders", orders);
                 request.setAttribute("chosedVehicle",vehicle);
 
                 getServletContext().getRequestDispatcher("/orders.jsp").forward(request, response);

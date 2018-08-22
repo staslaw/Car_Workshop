@@ -111,9 +111,9 @@
                                             <c:set var = "repairCost" value ="${order.repairCost}"/><fmt:formatNumber value = "${repairCost}" type="number" groupingUsed = "false" minFractionDigits="2" maxFractionDigits="2" />
                                         </c:if>
                                     </td>
-                                    <td><a class="btn btn-success" href="/order/details?id=${order.id}">szczegóły</a></td>
-                                    <td><a class="btn btn-primary" href="/order/update?id=${order.id}">edytuj</a></td>
-                                    <td><a class="btn btn-danger" href="#">usuń</a></td>
+                                    <td><a class="btn btn-default" href="/order/details?id=${order.id}"><i class="icon-info-circled-alt"></i> szczegóły</a></td>
+                                    <td><a class="btn btn-primary" href="/order/update?id=${order.id}"><i class="icon-cog"></i> edytuj</a></td>
+                                    <td><a class="btn btn-danger" href="#"><i class="icon-cancel-circled"></i> usuń</a></td>
                                 </tr>
                             </c:forEach>
                             </tbody>
