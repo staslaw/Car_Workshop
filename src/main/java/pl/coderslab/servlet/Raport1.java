@@ -24,6 +24,10 @@ public class Raport1 extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        String pageTitle = "Raport 1";
+        request.setAttribute("pageTitle",pageTitle);
+
         List<Employee> employeeList = EmployeeDao.loadAll();
         List<Order> orderList = OrderDao.loadAll();
         Map<String, Integer> roboczogodziny = new HashMap<>();

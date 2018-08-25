@@ -57,6 +57,9 @@ public class Employee extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+        String pageTitle = "Lista Pracowników";
+        request.setAttribute("pageTitle",pageTitle);
+
         List<pl.coderslab.model.Employee> employeeList = EmployeeDao.loadAll();
         request.setAttribute("employeeList", employeeList);
         getServletContext().getRequestDispatcher("/employee.jsp").forward(request, response);
