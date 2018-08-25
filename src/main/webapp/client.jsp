@@ -72,15 +72,15 @@
                 <h2>Lista klientów<c:if test="${!empty chosedClient}"> [szukaj: '${chosedClient}']</c:if></h2>
                 <table class="table table-striped table-hover">
                     <tr>
-                        <th>id</th>
-                        <th>imię</th>
-                        <th>nazwisko</th>
-                        <th>email</th>
-                        <th>nr tel.</th>
-                        <th>data ur.</th>
-                        <th>samochody</th>
-                        <th>edytuj</th>
-                        <th>usuń</th>
+                        <th>Id</th>
+                        <th>Imię</th>
+                        <th>Nazwisko</th>
+                        <th>Email</th>
+                        <th>Nr tel.</th>
+                        <th>Data ur.</th>
+                        <th>Pojazdy</th>
+                        <th>Edytuj</th>
+                        <th>Usuń</th>
                     </tr>
                     <c:forEach var="element" items="${clientList}">
                         <tr>
@@ -90,9 +90,9 @@
                             <td>${element.email}</td>
                             <td>${element.phone}</td>
                             <td>${element.birthday}</td>
-                            <td>samochody</td>
-                            <td><a class="btn btn-primary" href="/ClientUpdate?id=${element.id}"><i class="icon-cog"></i> edytuj</a></td>
-                            <td><a class="btn btn-danger" href="/ClientDelete?id=${element.id}"><i class="icon-cancel-circled"></i> usuń</a></td>
+                            <td><a class="btn btn-default" href="/vehicles/client?id=${element.id}"><i class="icon-info-circled-alt"></i> Sprawdź pojazdy</a></td>
+                            <td><a class="btn btn-primary" href="/ClientUpdate?id=${element.id}"><i class="icon-cog"></i> Edytuj</a></td>
+                            <td><a class="btn btn-danger" href="/ClientDelete?id=${element.id}"><i class="icon-cancel-circled"></i> Usuń</a></td>
                         </tr>
                     </c:forEach>
                 </table>

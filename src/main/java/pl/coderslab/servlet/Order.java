@@ -26,6 +26,9 @@ public class Order extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+        String pageTitle = "Lista Zleceń";
+        request.setAttribute("pageTitle",pageTitle);
+
         String servletPath = request.getServletPath();
 
         List<Employee> employees = EmployeeDao.loadAll();
@@ -33,7 +36,6 @@ public class Order extends HttpServlet {
 
         request.setAttribute("vehicles", vehicles);
         request.setAttribute("employees", employees);
-
 
         HttpSession httpSession = request.getSession();
         httpSession.setAttribute("servletPath", servletPath);

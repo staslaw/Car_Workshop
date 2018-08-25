@@ -54,11 +54,31 @@
         </div>
         <div class="row">
             <div class="col-md-12">
-                <h2>Lista pojazdów:</h2>
-                <form action="/showAllVehicles" method="post">
+                <%--<form action="/showAllVehicles" method="post">
                     <fieldset>Klient: <input type="text" name="find" >
                     </fieldset>
-                </form>
+                </form>--%>
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="row">
+
+                <h2 class="col-md-9 filtred-orders">
+                Lista pojazdów
+                <c:if test="${!empty chosedClient}"> klienta: ${chosedClient.firstName} ${chosedClient.lastName}</c:if>
+                </h2>
+
+                <div class="col-md-3">
+                    Klient:
+                    <select class="form-control" name='client' id="clients" data-vehicle-id="${chosedClient.id}">
+                        <option value="" >Wybierz klienta</option>
+                        <c:forEach items="${clients}" var="client">
+                            <option value="${client.id}">${client.firstName} ${client.lastName}</option>
+                        </c:forEach>
+                    </select>
+                    <p id="ajax-info" style="color:red"></p>
+                </div>
+                    </div>
+                </div>
 
                 <table class="table table-striped table-hover">
                     <tr>
@@ -71,7 +91,7 @@
                         <th>Client name</th>
                         <th>Repairs history</th>
                         <th>Edit</th>
-                        <th>Remove</th>
+                        <th>Delete</th>
                     </tr>
                     <c:forEach var="element" items="${vehicleList}">
                         <tr>
@@ -88,6 +108,7 @@
                         </tr>
                     </c:forEach>
                 </table>
+              </div>
             </div>
         </div>
     </div>
