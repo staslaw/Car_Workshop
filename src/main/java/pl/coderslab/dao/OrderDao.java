@@ -77,14 +77,20 @@ public class OrderDao {
             List<String[]> rows = DbService.getData(query,params);
             Order order = new Order();
             order.setId(Integer.parseInt(rows.get(0)[0]));
-            order.setEmployee(EmployeeDao.loadById(Integer.valueOf(rows.get(0)[1])));
             order.setVehicle(VehicleDao.loadById(Integer.valueOf(rows.get(0)[2])));
-            order.setStatus(StatusDao.loadById(Integer.valueOf(rows.get(0)[3])));
             order.setServiceAccept(rows.get(0)[4]);
             order.setServicePlan(rows.get(0)[5]);
             order.setServiceStart(rows.get(0)[6]);
             order.setIssueDesc(rows.get(0)[7]);
             order.setRepairDesc(rows.get(0)[8]);
+
+            if(rows.get(0)[1] != null) {
+                order.setEmployee(EmployeeDao.loadById(Integer.valueOf(rows.get(0)[1])));
+            }
+
+            if(rows.get(0)[3] != null) {
+                order.setStatus(StatusDao.loadById(Integer.valueOf(rows.get(0)[3])));
+            }
 
             if(rows.get(0)[9] != null) {
                 order.setRepairCost(Double.parseDouble(rows.get(0)[9]));
@@ -154,14 +160,21 @@ public class OrderDao {
             for(String[] row : rows){
                 Order order = new Order();
                 order.setId(Integer.parseInt(row[0]));
-                order.setEmployee(EmployeeDao.loadById(Integer.valueOf(row[1])));
                 order.setVehicle(VehicleDao.loadById(Integer.valueOf(row[2])));
-                order.setStatus(StatusDao.loadById(Integer.valueOf(row[3])));
                 order.setServiceAccept(row[4]);
                 order.setServicePlan(row[5]);
                 order.setServiceStart(row[6]);
                 order.setIssueDesc(row[7]);
                 order.setRepairDesc(row[8]);
+
+
+                if(row[1] != null) {
+                    order.setEmployee(EmployeeDao.loadById(Integer.valueOf(row[1])));
+                }
+
+                if(row[3] != null) {
+                    order.setStatus(StatusDao.loadById(Integer.valueOf(row[3])));
+                }
 
                 if(row[9] != null) {
                     order.setRepairCost(Double.parseDouble(row[9]));

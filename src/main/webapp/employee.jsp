@@ -61,46 +61,66 @@
         </div>
         <div class="row">
             <div class="col-md-12">
-                <form action="" method="post">
-                    <fieldset>
-                        <legend>
-                            Wyszukiwanie pracownika po nazwisku:
-                        </legend>
-                        <input type="text" name="find" required>
-                        <input type="submit" value="Szukaj">
-                    </fieldset>
-                </form>
-                <p style="color:red">${findInfo}</p>
-                <h2>Lista pracowników<c:if test="${!empty chosedEmployee}"> [szukaj: '${chosedEmployee}']</c:if></h2>
-
-                <table class="table table-striped table-hover">
-                    <tr>
-                        <th>id</th>
-                        <th>imię</th>
-                        <th>nazwisko</th>
-                        <th>adres</th>
-                        <th>nr tel.</th>
-                        <th>note</th>
-                        <th>stawka</th>
-                        <th>zlecenia</th>
-                        <th>edytuj</th>
-                        <th>usuń</th>
-                    </tr>
-                    <c:forEach var="element" items="${employeeList}">
-                        <tr>
-                            <td>${element.id}</td>
-                            <td>${element.firstName}</td>
-                            <td>${element.lastName}</td>
-                            <td>${element.address}</td>
-                            <td>${element.phone}</td>
-                            <td>${element.note}</td>
-                            <td>${element.hourly_rate}</td>
-                            <td><a class="btn btn-default" href="/orders/employee?id=${element.id}"><i class="icon-info-circled-alt"></i> Sprawdź zlecenia</a> </td>
-                            <td><a class="btn btn-primary" href="/EmployeeUpdate?id=${element.id}"><i class="icon-cog"></i> edytuj</a></td>
-                            <td><a class="btn btn-danger" href="/EmployeeDelete?id=${element.id}"><i class="icon-cancel-circled"></i> usuń</a></td>
-                        </tr>
-                    </c:forEach>
-                </table>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <h3>Lista pracowników</h3>
+                                <p style="color:red">${findInfo}</p>
+                                <p class="sort-chosed-employee" <c:if test="${!empty chosedEmployee}">style="display: block;"</c:if>>
+                                    <c:if test="${!empty chosedEmployee}"> [szukaj: '${chosedEmployee}']</c:if>
+                                </p>
+                            </div>
+                            <div class="col-md-4">
+                                <form action="" method="post">
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <label>Wyszukiwanie pracownika po nazwisku:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <input type="text" class="form-control" name="find" required>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <input type="submit" class="btn btn-default" value="Szukaj">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <table class="table table-striped table-hover">
+                            <tr>
+                                <th>id</th>
+                                <th>imię</th>
+                                <th>nazwisko</th>
+                                <th>adres</th>
+                                <th>nr tel.</th>
+                                <th>note</th>
+                                <th>stawka</th>
+                                <th>zlecenia</th>
+                                <th>edytuj</th>
+                                <th>usuń</th>
+                            </tr>
+                            <c:forEach var="element" items="${employeeList}">
+                                <tr>
+                                    <td>${element.id}</td>
+                                    <td>${element.firstName}</td>
+                                    <td>${element.lastName}</td>
+                                    <td>${element.address}</td>
+                                    <td>${element.phone}</td>
+                                    <td>${element.note}</td>
+                                    <td>${element.hourly_rate}</td>
+                                    <td><a class="btn btn-default" href="/orders/employee?id=${element.id}"><i class="icon-info-circled-alt"></i> Sprawdź zlecenia</a> </td>
+                                    <td><a class="btn btn-primary" href="/EmployeeUpdate?id=${element.id}"><i class="icon-cog"></i> edytuj</a></td>
+                                    <td><a class="btn btn-danger" href="/EmployeeDelete?id=${element.id}"><i class="icon-cancel-circled"></i> usuń</a></td>
+                                </tr>
+                            </c:forEach>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

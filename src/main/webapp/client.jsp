@@ -59,43 +59,65 @@
         </div>
         <div class="row">
             <div class="col-md-12">
-                <form action="" method="post">
-                    <fieldset>
-                        <legend>
-                            Wyszukiwanie klienta po nazwisku:
-                        </legend>
-                        <input type="text" name="find" required>
-                        <input type="submit" value="Szukaj">
-                    </fieldset>
-                </form>
-                <p style="color:red">${findInfo}</p>
-                <h2>Lista klientów<c:if test="${!empty chosedClient}"> [szukaj: '${chosedClient}']</c:if></h2>
-                <table class="table table-striped table-hover">
-                    <tr>
-                        <th>id</th>
-                        <th>imię</th>
-                        <th>nazwisko</th>
-                        <th>email</th>
-                        <th>nr tel.</th>
-                        <th>data ur.</th>
-                        <th>samochody</th>
-                        <th>edytuj</th>
-                        <th>usuń</th>
-                    </tr>
-                    <c:forEach var="element" items="${clientList}">
-                        <tr>
-                            <td>${element.id}</td>
-                            <td>${element.firstName}</td>
-                            <td>${element.lastName}</td>
-                            <td>${element.email}</td>
-                            <td>${element.phone}</td>
-                            <td>${element.birthday}</td>
-                            <td>samochody</td>
-                            <td><a class="btn btn-primary" href="/ClientUpdate?id=${element.id}"><i class="icon-cog"></i> edytuj</a></td>
-                            <td><a class="btn btn-danger" href="/ClientDelete?id=${element.id}"><i class="icon-cancel-circled"></i> usuń</a></td>
-                        </tr>
-                    </c:forEach>
-                </table>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <h3>Lista klientów</h3>
+                                <p style="color:red">${findInfo}</p>
+                                <p class="sort-chosed-client" <c:if test="${!empty chosedClient}">style="display: block;"</c:if>>
+                                    <c:if test="${!empty chosedClient}"> [szukaj: '${chosedClient}']</c:if>
+                                </p>
+                            </div>
+                            <div class="col-md-4">
+                                <form action="" method="post">
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <label>Wyszukiwanie klienta po nazwisku:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <input type="text" class="form-control" name="find" required>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <input type="submit" class="btn btn-default" value="Szukaj">
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <table class="table table-striped table-hover">
+                            <tr>
+                                <th>id</th>
+                                <th>imię</th>
+                                <th>nazwisko</th>
+                                <th>email</th>
+                                <th>nr tel.</th>
+                                <th>data ur.</th>
+                                <th>samochody</th>
+                                <th>edytuj</th>
+                                <th>usuń</th>
+                            </tr>
+                            <c:forEach var="element" items="${clientList}">
+                                <tr>
+                                    <td>${element.id}</td>
+                                    <td>${element.firstName}</td>
+                                    <td>${element.lastName}</td>
+                                    <td>${element.email}</td>
+                                    <td>${element.phone}</td>
+                                    <td>${element.birthday}</td>
+                                    <td>samochody</td>
+                                    <td><a class="btn btn-primary" href="/client/update?id=${element.id}"><i class="icon-cog"></i> edytuj</a></td>
+                                    <td><a class="btn btn-danger" href="/client/delete?id=${element.id}"><i class="icon-cancel-circled"></i> usuń</a></td>
+                                </tr>
+                            </c:forEach>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

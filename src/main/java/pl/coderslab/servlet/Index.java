@@ -30,26 +30,16 @@ public class Index extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<Order> orders = OrderDao.loadAll();
-        List<Client> clients = ClientDao.loadAll();
-        List<Employee> employees = EmployeeDao.loadAll();
-        List<Vehicle> vehicles = VehicleDao.loadAll();
 
         String servletPath = request.getServletPath();
 
         HttpSession httpSession = request.getSession();
         httpSession.setAttribute("servletPath", servletPath);
 
+        List<Order> ordersLast5 = new ArrayList<>(orders.subList(0,5));
 
-        request.setAttribute("vehicles", vehicles);
-        request.setAttribute("employees", employees);
-        request.setAttribute("clients",clients);
-
-        List<Order> ordersLast5 = OrderDao.loadLastLimit(5);
 
         int ordersSize = orders.size();
-        int clientsSize = clients.size();
-        int employeesSize = employees.size();
-        int vehiclesSize = vehicles.size();
 
 //        '1', 'Przyjęty'
 //        '2', 'Zatwierdzone koszty'
@@ -81,9 +71,6 @@ public class Index extends HttpServlet {
         Map<String, Integer> stats = new HashMap<>();
 
         stats.put("ordersSize",ordersSize);
-        stats.put("clientsSize",clientsSize);
-        stats.put("employeesSize",employeesSize);
-        stats.put("vehiclesSize",vehiclesSize);
         stats.put("statsInRepair",statsInRepair);
         stats.put("statsEnded",statsEnded);
         stats.put("statsCancel",statsCancel);

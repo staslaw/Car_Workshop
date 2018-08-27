@@ -198,6 +198,10 @@ public class OrderUpdate extends HttpServlet {
 
             }
 
+            System.out.println("********************");
+            System.out.println(previousServletPath);
+
+
             request.setAttribute("previousServletPath",previousServletPath);
 
 
@@ -208,18 +212,72 @@ public class OrderUpdate extends HttpServlet {
             if (formInfoAdding.size()==0) {
                 orderToAdd.setStatus(StatusDao.loadById(statusId));
                 OrderDao.save(orderToAdd);
-                response.sendRedirect("/orders");
+
+                if("/orders".equals(previousServletPath)) {
+                    response.sendRedirect("/orders");
+
+                } else if ("/order/update".equals(previousServletPath)) {
+                    response.sendRedirect("/order/update");
+
+
+                } else {
+                    response.sendRedirect("/");
+
+                }
+
             } else {
 
                 if("/orders".equals(previousServletPath)) {
-                    backtoFormWithInfo(request, response, orderToAdd, orderEditing, formInfoAdding,null,"/orders.jsp");
+                    List<pl.coderslab.model.Order> orders = OrderDao.loadAll();
+                    request.setAttribute("orders", orders);
+
+                    Map<String, Integer> stats = getValuesForOrdersView(orders);
+
+                    request.setAttribute("stats",stats);
+
+                    backtoFormWithInfo(request, response, orderToAdd, null, formInfoAdding,null,"/orders.jsp");
 
                 } else if ("/order/update".equals(previousServletPath)) {
                     backtoFormWithInfo(request, response, orderToAdd, orderEditing, formInfoAdding,null,"/WEB-INF/fragments/editor.jsp");
 
 
                 } else {
-                    backtoFormWithInfo(request, response, orderToAdd,orderEditing, formInfoAdding,null,"/index.jsp");
+
+                    List<Order> orders = OrderDao.loadAll();
+                    List<Order> ordersLast5 = new ArrayList<>(orders.subList(0,5));
+
+                    int ordersSize = orders.size();
+
+                    int statsInRepair = 0;
+                    int statsEnded = 0;
+                    int statsCancel = 0;
+
+                    for(Order order: orders) {
+                        int status = order.getStatus().getId();
+                        if (status !=4 && status !=5) {
+                            statsInRepair++;
+                        } else if (status ==4) {
+                            statsEnded++;
+                        } else {
+                            statsCancel++;
+                        }
+                    }
+
+                    statsInRepair = 100 * statsInRepair/ordersSize;
+                    statsEnded = 100 * statsEnded/ordersSize;
+                    statsCancel = 100 * statsCancel/ordersSize;
+
+
+                    Map<String, Integer> stats = new HashMap<>();
+
+                    stats.put("ordersSize",ordersSize);
+                    stats.put("statsInRepair",statsInRepair);
+                    stats.put("statsEnded",statsEnded);
+                    stats.put("statsCancel",statsCancel);
+
+                    request.setAttribute("stats",stats);
+                    request.setAttribute("ordersLast5",ordersLast5);
+                    backtoFormWithInfo(request, response, orderToAdd,null, formInfoAdding,null,"/index.jsp");
 
                 }
             }
@@ -303,16 +361,13 @@ public class OrderUpdate extends HttpServlet {
 
         String servletPath = request.getServletPath();
 
-        List<Vehicle> vehicles = VehicleDao.loadAll();
-        List<Employee> employees = EmployeeDao.loadAll();
-        request.setAttribute("vehicles", vehicles);
-        request.setAttribute("employees", employees);
-
-
         if("/order/update".equalsIgnoreCase(servletPath)) {
 
-            String idParam = request.getParameter("id");
+            List<Vehicle> vehicles = VehicleDao.loadAll();
+            List<Employee> employees = EmployeeDao.loadAll();
+            List<Status> statuses = StatusDao.loadAll();
 
+            String idParam = request.getParameter("id");
 
             // sesje są zapisywame, aby wiedzieć skąd pochodzi zapytanie i następnie odesłać w to samo miejsce
             // chodzi o formularz dodający nowe zlecenie - ktory jest na stronie głównej, w zakładce naprawy i w zakładce edytuj naprawę.
@@ -332,13 +387,11 @@ public class OrderUpdate extends HttpServlet {
                 httpSession.setAttribute("orderEditingSession",orderEditing);
             }
 
-
-            List<Status> statuses = StatusDao.loadAll();
-
-            request.setAttribute("orderEditing",orderEditing);
+            request.setAttribute("vehicles", vehicles);
+            request.setAttribute("employees", employees);
             request.setAttribute("statuses", statuses);
+            request.setAttribute("orderEditing",orderEditing);
             request.setAttribute("servletPath",servletPath);
-
 
             getServletContext().getRequestDispatcher("/WEB-INF/fragments/editor.jsp").forward(request, response);
         }
@@ -348,33 +401,14 @@ public class OrderUpdate extends HttpServlet {
         List<Vehicle> vehicles = VehicleDao.loadAll();
         List<Employee> employees = EmployeeDao.loadAll();
         List<Status> statuses = StatusDao.loadAll();
-        List<Order> orders = OrderDao.loadAll();
-        List<Client> clients = ClientDao.loadAll();
-        List<Order> ordersLast5 = OrderDao.loadLastLimit(5);
 
         request.setAttribute("formInfoAdding",formInfoAdding);
         request.setAttribute("formInfoEditing",formInfoEditing);
         request.setAttribute("vehicles", vehicles);
         request.setAttribute("employees", employees);
-        request.setAttribute("ordersLast5", ordersLast5);
-        request.setAttribute("orders", orders);
         request.setAttribute("orderToAdd",orderToAdd);
         request.setAttribute("orderEditing",orderEditing);
         request.setAttribute("statuses", statuses);
-
-        int ordersSize = orders.size();
-        int clientsSize = clients.size();
-        int employeesSize = employees.size();
-        int vehiclesSize = vehicles.size();
-
-        Map<String, Integer> stats = getValuesForOrdersView(employees, orders);
-
-        stats.put("ordersSize",ordersSize);
-        stats.put("clientsSize",clientsSize);
-        stats.put("employeesSize",employeesSize);
-        stats.put("vehiclesSize",vehiclesSize);
-
-        request.setAttribute("stats",stats);
 
         getServletContext().getRequestDispatcher(path).forward(request, response);
     }

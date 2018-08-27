@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(name = "ClientDelete", urlPatterns = "/ClientDelete")
+@WebServlet(name = "ClientDelete", urlPatterns = "/client/delete")
 public class ClientDelete extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -19,6 +19,6 @@ public class ClientDelete extends HttpServlet {
         int id = Integer.parseInt(request.getParameter("id"));
         Client client = ClientDao.loadById(id);
         ClientDao.delete(client);
-        response.sendRedirect("/Client");
+        response.sendRedirect("/clients");
     }
 }
