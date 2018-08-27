@@ -19,6 +19,10 @@ public class Raport2 extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        String pageTitle = "Raport 2";
+        request.setAttribute("pageTitle",pageTitle);
+
         List<Order> orderList = OrderDao.loadAll();
         String from = request.getParameter("from");
         String to = request.getParameter("to");

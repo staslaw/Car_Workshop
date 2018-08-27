@@ -24,8 +24,10 @@ public class Order extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        String servletPath = request.getServletPath();
+        String pageTitle = "Lista Zleceń";
+        request.setAttribute("pageTitle",pageTitle);
 
+        String servletPath = request.getServletPath();
         HttpSession httpSession = request.getSession();
         httpSession.setAttribute("servletPath", servletPath);
 
