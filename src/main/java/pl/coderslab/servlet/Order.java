@@ -5,8 +5,6 @@ import pl.coderslab.dao.OrderDao;
 import pl.coderslab.dao.VehicleDao;
 import pl.coderslab.model.Employee;
 import pl.coderslab.model.Vehicle;
-
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -30,13 +28,6 @@ public class Order extends HttpServlet {
         request.setAttribute("pageTitle",pageTitle);
 
         String servletPath = request.getServletPath();
-
-        List<Employee> employees = EmployeeDao.loadAll();
-        List<Vehicle> vehicles = VehicleDao.loadAll();
-
-        request.setAttribute("vehicles", vehicles);
-        request.setAttribute("employees", employees);
-
         HttpSession httpSession = request.getSession();
         httpSession.setAttribute("servletPath", servletPath);
 
@@ -44,7 +35,7 @@ public class Order extends HttpServlet {
             List<pl.coderslab.model.Order> orders = OrderDao.loadAll();
             request.setAttribute("orders", orders);
 
-            Map<String, Integer> stats = getValuesForOrdersView(employees, orders);
+            Map<String, Integer> stats = getValuesForOrdersView(orders);
 
             request.setAttribute("stats",stats);
 
@@ -59,9 +50,9 @@ public class Order extends HttpServlet {
             } else {
 
                 int id = Integer.valueOf(idParam);
-                List<pl.coderslab.model.Order> orderList = OrderDao.loadAllByEmployeeId(id);
+                List<pl.coderslab.model.Order> orders = OrderDao.loadAllByEmployeeId(id);
                 Employee employee = EmployeeDao.loadById(id);
-                request.setAttribute("orderList", orderList);
+                request.setAttribute("orders", orders);
                 request.setAttribute("chosedEmployee",employee);
 
                 getServletContext().getRequestDispatcher("/orders.jsp").forward(request, response);
@@ -86,53 +77,31 @@ public class Order extends HttpServlet {
         }
     }
 
-    public static Map<String, Integer> getValuesForOrdersView(List<Employee> employees, List<pl.coderslab.model.Order> orderList) {
-        int freeEmployees = 0;
+    public static Map<String, Integer> getValuesForOrdersView(List<pl.coderslab.model.Order> orders) {
 
-        boolean employeeFound = true;
-
-        for(Employee employee: employees) {
-            for(pl.coderslab.model.Order order: orderList) {
-                if(employee.getId() == order.getEmployee().getId()) {
-                    employeeFound = true;
-                    break;
-                } else {
-                    employeeFound = false;
-                }
-
-            }
-
-            if(employeeFound==false) {
-                freeEmployees++;
-            }
-        }
-
-        List<pl.coderslab.model.Order> ordersAwaited = OrderDao.loadAllByStatusId(1);
-        List<pl.coderslab.model.Order> ordersInRepair = OrderDao.loadAllByStatusId(3);
-        List<pl.coderslab.model.Order> ordersEnded = OrderDao.loadAllByStatusId(4);
-
-        int orderAwaitedCount = 0;
-        int orderInRepairCount = 0;
+        int ordersAwaitedCount = 0;
+        int ordersInRepairCount = 0;
         int ordersEndedCount = 0;
+        int ordersCanceled = 0;
 
-        if(ordersAwaited != null) {
-            orderAwaitedCount = ordersAwaited.size();
-        }
-
-        if(ordersInRepair != null) {
-            orderInRepairCount = ordersInRepair.size();
-        }
-
-        if(ordersEnded != null) {
-            ordersEndedCount = ordersEnded.size();
+        for(pl.coderslab.model.Order order : orders) {
+            if(order.getStatus().getId() == 1) {
+                ordersAwaitedCount++;
+            } else if (order.getStatus().getId() == 3) {
+                ordersInRepairCount++;
+            } else if (order.getStatus().getId() == 4) {
+                ordersEndedCount++;
+            } else if (order.getStatus().getId() == 5) {
+                ordersCanceled++;
+            }
         }
 
         Map<String, Integer> stats = new HashMap<>();
 
-        stats.put("orderAwaitedCount",orderAwaitedCount);
-        stats.put("orderInRepairCount",orderInRepairCount);
+        stats.put("ordersAwaitedCount",ordersAwaitedCount);
+        stats.put("ordersInRepairCount",ordersInRepairCount);
         stats.put("ordersEndedCount",ordersEndedCount);
-        stats.put("freeEmployees",freeEmployees);
+        stats.put("ordersCanceled",ordersCanceled);
         return stats;
     }
 }

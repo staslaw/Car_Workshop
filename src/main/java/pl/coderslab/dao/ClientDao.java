@@ -106,7 +106,7 @@ public class ClientDao {
                 client.setId(0);
             }
         }catch (SQLException e) {
-            System.err.println(e.getMessage());
+            e.printStackTrace();
         }
     }
 }

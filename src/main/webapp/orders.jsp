@@ -34,20 +34,20 @@
                     <div class="panel-body">
                         <div class="col-md-3">
                             <div class="well dash-box">
-                                <h2><i class="icon-wrench"></i> ${stats["orderInRepairCount"]}</h2>
-                                <h4>Naprawy w trakce</h4>
+                                <h2><i class="icon-wrench"></i> ${stats["ordersInRepairCount"]}</h2>
+                                <h4>Naprawy w trakcie</h4>
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="well dash-box">
-                                <h2><i class="icon-hourglass"></i> ${stats["orderAwaitedCount"]}</h2>
+                                <h2><i class="icon-hourglass"></i> ${stats["ordersAwaitedCount"]}</h2>
                                 <h4>Oczekujące zlecenia</h4>
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="well dash-box">
-                                <h2><i class="icon-user-secret"></i> ${stats["freeEmployees"]}</h2>
-                                <h4>Pracownicy bez zleceń</h4>
+                                <h2><i class="icon-cancel-outline"></i> ${stats["ordersCanceled"]}</h2>
+                                <h4>Rezygnacje klientów</h4>
                             </div>
                         </div>
                         <div class="col-md-3">
@@ -66,18 +66,30 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <div class="row">
-                            <h3 class="col-md-9 filtred-orders">
-                                Lista zleceń
-                                <c:if test="${!empty chosedEmployee}"> pracownika: ${chosedEmployee.firstName} ${chosedEmployee.lastName}</c:if>
-                                <c:if test="${!empty chosedVehicle}"> dotycząca pojazdu: ${chosedVehicle.model} ${chosedVehicle.make} ${chosedVehicle.registration}</c:if>
-                            </h3>
+                            <div class="col-md-9">
+                                <h3 class="filtred-orders">
+                                    Lista zleceń
+                                </h3>
+                                <p class="sort-chosed-employee" <c:if test="${!empty chosedEmployee}">style="display: block;"</c:if>>
+                                    pracownika:
+                                    <span>
+                                        <c:if test="${!empty chosedEmployee}"> ${chosedEmployee.firstName} ${chosedEmployee.lastName}</c:if>
+                                    </span>
+                                </p>
+                                <p class="sort-chosed-vehicle" <c:if test="${!empty chosedVehicle}">style="display: block;"</c:if>>
+                                    dotycząca pojazdu:
+                                    <span>
+                                        <c:if test="${!empty chosedVehicle}"> ${chosedVehicle.model} ${chosedVehicle.make} ${chosedVehicle.registration}</c:if>
+                                    </span>
+                                </p>
+                            </div>
                             <div class="col-md-3">
-                                Pracownik:
-                                <select class="form-control" name='employee' id="employees" data-vehicle-id="${chosedVehicle.id}">
+                                <label>Pracownik:</label>
+                                <select class="form-control employee-list name-only" name='employee' id="employees" data-vehicle-id="${chosedVehicle.id}">
                                     <option value="" >Wybierz pracownika</option>
-                                    <c:forEach items="${employees}" var="employee">
-                                        <option value="${employee.id}">${employee.firstName} ${employee.lastName}</option>
-                                    </c:forEach>
+                                    <%--<c:forEach items="${employees}" var="employee">--%>
+                                        <%--<option value="${employee.id}">${employee.firstName} ${employee.lastName}</option>--%>
+                                    <%--</c:forEach>--%>
                                 </select>
                                 <p id="ajax-info" style="color:red"></p>
                             </div>

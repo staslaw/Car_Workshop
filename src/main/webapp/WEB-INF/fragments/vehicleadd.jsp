@@ -38,11 +38,8 @@
         </div>
         <div class=form-groupr">
             <label>Właściciel pojazdu:</label>
-            <select class="form-control" name='clientId' id="client" required>
+            <select class="form-control client-list" name='clientId' required>
                 <option value="" ></option>
-                <c:forEach items="${clients}" var="client">
-                    <option value="${client.id}">${client.firstName} ${client.lastName}</option>
-                </c:forEach>
             </select>
         </div>
     </div>

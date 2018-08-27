@@ -31,13 +31,12 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">AdminStrap</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
                 <li class="active"><a href="/">Dashboard</a></li>
                 <li><a href="/orders">Zlecenia</a></li>
-                <li><a href="/Client">Klienci</a></li>
+                <li><a href="/clients">Klienci</a></li>
                 <li><a href="/Employee">Pracownicy</a></li>
                 <li><a href="/showAllVehicles">Pojazdy</a></li>
                 <li><a href="/Raport1">Raport1</a></li>

@@ -36,13 +36,8 @@
         </div>
         <div class="form-group">
             <label>Dotyczy pojazdu:</label>
-            <select name='vehicle' class="form-control vehicle-select" required>
+            <select name='vehicle' class="form-control vehicle-select vehicle-list" required>
                 <option value="">Wybierz z listy:</option>
-                <c:forEach items="${vehicles}" var="vehicle">
-                    <option <c:if test="${vehicle.id == orderToAdd.vehicle.id}">selected</c:if> value="${vehicle.id}">
-                            ${vehicle.model} ${vehicle.make} ${vehicle.registration}
-                    </option>
-                </c:forEach>
             </select>
         </div>
         <div class="form-group">
@@ -51,13 +46,8 @@
         </div>
         <div class="form-group">
             <label>Pracownik odpowiedzialny:</label>
-            <select name='employee' class="form-control" id="employee" class="costs-counting">
+            <select name='employee' class="form-control employee-list" class="costs-counting">
                 <option value="">Wybierz z listy:</option>
-                <c:forEach items="${employees}" var="employee">
-                    <option <c:if test="${employee.id == orderToAdd.employee.id}">selected</c:if> value="${employee.id}" data-hourly-rate="${employee.hourly_rate}">
-                            ${employee.firstName} ${employee.lastName} (stawka: ${employee.hourly_rate} zł/h)
-                    </option>
-                </c:forEach>
             </select>
         </div>
         <div class="form-group">

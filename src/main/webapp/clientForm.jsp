@@ -9,7 +9,7 @@
 
 <jsp:include page="WEB-INF/fragments/header.jsp"/>
 
-<form action='/ClientUpdate' method='post'>
+<form action='/client/edit' method='post'>
     <input type='text' name='id' value='${client.id}' hidden>
     <input type='text' name='firstName' value='${client.firstName}' required>imię<br>
     <input type='text' name='lastName' value='${client.lastName}' required>nazwisko<br>

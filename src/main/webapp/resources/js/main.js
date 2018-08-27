@@ -1,32 +1,113 @@
 $(document).ready(function() {
-    console.log("hello !")
+
+    var employeesFromBase;
+    var vehiclesFromBase;
+    var clientsFromBase;
+
+    var clientsSize;
+    var employeesSize;
+    var vehiclesSize;
+
+    $.ajax({
+        url : '/GetAllElements',
+        dataType : "json",
+        success : function(result) {
+
+            clientsFromBase = result[0];
+            employeesFromBase = result[1];
+            vehiclesFromBase = result[2];
+
+            var employeeSelectList = $(".employee-list");
+            var vehicleSelectList = $(".vehicle-list")
+            var clientSelectList = $(".client-list");
+
+            clientsSize = clientsFromBase.length;
+            employeesSize = employeesFromBase.length;
+            vehiclesSize = vehiclesFromBase.length;
+
+            $(".clients-size").append(clientsSize);
+            $(".employees-size").append(employeesSize);
+            $(".vehicles-size").append(vehiclesSize);
+
+            employeesFromBase.forEach(function (employee) {
+                var option = $("<option>").attr("value",employee.id);
+                var employeeInfo = employee.firstName + " " + employee.lastName;
+
+                if(!employeeSelectList.hasClass("name-only")){
+                    employeeInfo = employee.firstName + " " + employee.lastName + " (stawka: " + employee.hourly_rate + " zł/h)";
+                }
+
+                option.append(employeeInfo);
+                employeeSelectList.append(option);
+            })
+
+            vehiclesFromBase.forEach(function (vehicle) {
+                var option = $("<option>").attr("value",vehicle.id);
+                var vehicleInfo = vehicle.model + " " + vehicle.make + " " + vehicle.registration;
+                option.append(vehicleInfo);
+                vehicleSelectList.append(option);
+            })
+
+            clientsFromBase.forEach(function (client) {
+                var option = $("<option>").attr("value",client.id);
+                var clientInfo = client.firstName + " " + client.lastName;
+                option.append(clientInfo);
+                clientSelectList.append(option);
+            })
+
+        },
+        error: function(data){
+            // console.log("error")
+        }
+    });
 
     var vehicleSelect = $('.vehicle-select');
 
     vehicleSelect.on("change",function() {
-        var self = $(this);
-        $.ajax({
-            url : '/GetVehicle',
-            data : {
-                vehicleId : $(this).find(':selected').val()
-            },
-            dataType : "json",
-            statusCode: {
-                500: function() {
-                    self.closest('.modal-body').find('.vehicle-owner').val("Coś nie tak");
-                }
-            },
-            success : function(result) {
-                var od = result ;
-                var odString = JSON.stringify(result) ;
-                console.log(odString);
-                console.log(self);
-                self.closest('.modal-body').find('.vehicle-owner').val(od.client.firstName + " " + od.client.lastName);
-            },
-            error: function(data){
-                self.closest('.modal-body').find('.vehicle-owner').val("Brak połączenia z bazą danych");
+
+        var selectedVehicleId = $(this).find(':selected').val();
+        var foundVehicleOwner = false;
+
+        for (var i = 0; i < vehiclesFromBase.length ; i++) {
+
+            // console.log("przeszukuje samochody")
+
+            if(vehiclesFromBase[i].id == selectedVehicleId) {
+
+                $(this).closest('.modal-body').find('.vehicle-owner').val(vehiclesFromBase[i].client.firstName + " " + vehiclesFromBase[i].client.lastName);
+                foundVehicleOwner = true;
+                break
             }
-        });
+        }
+
+        if(!foundVehicleOwner) {
+            $(this).closest('.modal-body').find('.vehicle-owner').val("Brak przypisanego właściciela pojazdu");
+        }
+
+
+
+        // $.ajax({
+        //     url : '/GetVehicle',
+        //     data : {
+        //         vehicleId : $(this).find(':selected').val()
+        //     },
+        //     dataType : "json",
+        //     statusCode: {
+        //         500: function() {
+        //             self.closest('.modal-body').find('.vehicle-owner').val("Coś nie tak");
+        //         }
+        //     },
+        //     success : function(result) {
+        //         var od = result ;
+        //         var odString = JSON.stringify(result) ;
+        //         console.log(odString);
+        //         console.log(self);
+        //         self.closest('.modal-body').find('.vehicle-owner').val(od.client.firstName + " " + od.client.lastName);
+        //     },
+        //     error: function(data){
+        //         self.closest('.modal-body').find('.vehicle-owner').val("Brak połączenia z bazą danych");
+        //     }
+        // });
     });
 
     $('#employee').on("change",function() {
@@ -49,15 +130,15 @@ $(document).ready(function() {
     });
 
     var ordersList = $('#orders-list').html();
-    var header = $('.filtred-orders');
-    if(header.length !=0) {
-        var editedHeader = header.html();
-        var n = header.html().lastIndexOf('pracownika');
-        if(n >= 0) {
-            editedHeader = header.substring(0,n)
-        }
-
-    }
+    // var header = $('.filtred-orders');
+    // if(header.length !=0) {
+    //     var editedHeader = header.html();
+    //     var n = header.html().lastIndexOf('pracownika');
+    //     if(n >= 0) {
+    //         editedHeader = header.substring(0,n)
+    //     }
+    //
+    // }
 
 
     $('#employees').on("change",function() {
@@ -91,15 +172,14 @@ $(document).ready(function() {
                             var repairCost = (value.repairCost > 0) ? value.repairCost.toFixed(2) : "";
                             repairCost = repairCost.replace(".",",")
                             employeeOrders += "<td>" + repairCost + "</td>";
-                            employeeOrders += "<td><a class='btn btn-success' href='/order/details?id=" + value.id + "'>szczegóły</a></td>";
-                            employeeOrders += "<td><a class='btn btn-primary' href='/order/update?id=" + value.id + "'>edytuj</a></td>";
-                            employeeOrders += "<td><a class='btn btn-danger' href='#'>usuń</a></td>";
+                            employeeOrders += "<td><a class='btn btn-default' href='/order/details?id=" + value.id + "'><i class=\"icon-info-circled-alt\"></i> szczegóły</a></td>";
+                            employeeOrders += "<td><a class='btn btn-primary' href='/order/update?id=" + value.id + "'><i class=\"icon-cog\"></i> edytuj</a></td>";
+                            employeeOrders += "<td><a class='btn btn-danger' href='#'><i class=\"icon-cancel-circled\"></i> usuń</a></td>";
                             employeeOrders += "</tr>";
 
                         });
                         $('#orders-list').html(employeeOrders);
-                        var newHeader = editedHeader + " pracownika: " + od[0].employee.firstName + " " + od[0].employee.lastName;
-                        header.html(newHeader);
+                        $(".sort-chosed-employee").show().find("span").text(od[0].employee.firstName + " " + od[0].employee.lastName);
                         $('#ajax-info').html("");
                     } else {
                         $('#ajax-info').html("Nie ma takiego powiązania");
@@ -114,8 +194,53 @@ $(document).ready(function() {
             });
         } else {
             $('#orders-list').html(ordersList);
-            header.html(editedHeader);
+            // header.html(editedHeader);
             $('#ajax-info').html("");
+            $(".sort-chosed-employee").hide().find("span").text("");
+        }
+    });
+
+    var clientsList = $('#clients-list').html();
+
+    $('#clients').on("change",function() {
+        if($(this).find(':selected').val()) {
+            
+            var selectedClientId = $(this).find(':selected').val();
+
+            var clientVehicles = "";
+
+            vehiclesFromBase.forEach(function (vehicle) {
+
+                if(vehicle.client.id == selectedClientId) {
+
+                    $(".sort-chosed-client").show().find("span").text(vehicle.client.firstName + " " + vehicle.client.lastName);
+
+                    // console.log("znalazłem samochód klienta");
+
+                    clientVehicles += "<tr>";
+                    clientVehicles += "<td>" + vehicle.id +"</td>";
+                    clientVehicles += "<td>" + vehicle.model +"</td>";
+                    clientVehicles += "<td>" + vehicle.make + "</td>";
+                    clientVehicles += "<td>" + vehicle.productionDate + "</td>";
+                    clientVehicles += "<td>" + vehicle.registration + "</td>";
+                    clientVehicles += "<td>" + vehicle.nextService + "</td>";
+                    clientVehicles += "<td>" + vehicle.client.firstName + " " + vehicle.client.lastName + "</td>";
+                    clientVehicles += "<td><a class='btn btn-default' href='/orders/vehicle?id=" + vehicle.id + "'><i class=\"icon-info-circled-alt\"></i> szczegóły</a></td>";
+                    clientVehicles += "<td><a class='btn btn-primary' href='/updateVehicle?id=" + vehicle.id + "'><i class=\"icon-cog\"></i> edytuj</a></td>";
+                    clientVehicles += "<td><a class='btn btn-danger' href='/deleteVehicle?id=" + vehicle.id + "'><i class=\"icon-cancel-circled\"></i> usuń</a></td>";
+                    clientVehicles += "</tr>";
+                }
+
+            })
+
+            $('#ajax-info').html("");
+            $('#clients-list').html(clientVehicles);
+
+        } else {
+            $('#clients-list').html(clientsList);
+            // header.html(editedHeader);
+            $('#ajax-info').html("");
+            $(".sort-chosed-employee").hide().find("span").text("");
         }
     });
 
@@ -128,8 +253,8 @@ $(document).ready(function() {
     // po walidacji po stronie serwera formularza do edycji zlecen ponowne otwarcie formularza z dodanymi przez serwer komunikatami
 
     var formValid = $('.formValid.editor-add');
-    console.log(formValid);
-    console.log(formValid.data('is-valid'));
+    // console.log(formValid);
+    // console.log(formValid.data('is-valid'));
 
 
     if(formValid.data('is-valid') == '0') {
@@ -137,10 +262,10 @@ $(document).ready(function() {
         console.log("formularz nie zwalidowany");
         var formToInvolve = formValid.closest(".modal")[0].id;
 
-        console.log(formToInvolve)
+        // console.log(formToInvolve)
 
         var elementToInvole = $(".add-elements").find("[data-target='#" + formToInvolve + "']");
-        console.log(elementToInvole);
+        // console.log(elementToInvole);
 
         elementToInvole.click();
 

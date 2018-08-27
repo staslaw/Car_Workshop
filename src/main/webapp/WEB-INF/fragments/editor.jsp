@@ -39,6 +39,10 @@
                                 <jsp:include page="orderedit.jsp"/>
                             </c:when>
 
+                            <c:when test = "${'/client/update'.equals(servletPath)}">
+                                <jsp:include page="clientedit.jsp"/>
+                            </c:when>
+
                             <c:otherwise>
                             </c:otherwise>
                         </c:choose>

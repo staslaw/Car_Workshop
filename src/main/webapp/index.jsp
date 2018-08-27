@@ -62,22 +62,22 @@
                         </div>
                         <div class="col-md-3">
                             <div class="well dash-box">
-                                <a class="absolute-full-link" href="/Client"></a>
-                                <h2><i class="icon-user"></i> ${stats["clientsSize"]}</h2>
+                                <a class="absolute-full-link" href="/clients"></a>
+                                <h2 class="clients-size"><i class="icon-user"></i> ${stats["clientsSize"]}</h2>
                                 <h4>Klienci</h4>
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="well dash-box">
                                 <a class="absolute-full-link" href="/Employee"></a>
-                                <h2><i class="icon-user-secret"></i> ${stats["employeesSize"]}</h2>
+                                <h2 class="employees-size"><i class="icon-user-secret"></i> ${stats["employeesSize"]}</h2>
                                 <h4>Pracownicy</h4>
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="well dash-box">
                                 <a class="absolute-full-link" href="/showAllVehicles"></a>
-                                <h2><i class="icon-cab"></i> ${stats["vehiclesSize"]}</h2>
+                                <h2 class="vehicles-size"><i class="icon-cab"></i> ${stats["vehiclesSize"]}</h2>
                                 <h4>Pojazdy</h4>
                             </div>
                         </div>
@@ -108,7 +108,7 @@
                                         </c:if>
                                     </td>
                                     <td>${order.status.name}</td>
-                                    <td><a class="btn btn-success" href="/order/details?id=${order.id}">szczegóły</a></td>
+                                    <td><a class="btn btn-default" href="/order/details?id=${order.id}"><i class="icon-info-circled-alt"></i>szczegóły</a></td>
                                 </tr>
                             </c:forEach>
                         </table>
