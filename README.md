@@ -6,5 +6,7 @@ The application uses:
 2. In the viewing layer: HTML, CSS, JSP, Bootstrap, JavaScript, JQuery, ajax
 
 ![](images/carWorkshop1.png)
+
 ![](images/carWorkshop2.png)
+
 ![](images/carWorkshop3.png)
